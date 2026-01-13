@@ -4,7 +4,7 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-ser
 .header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
 h1{margin:0;font-size:28px}
 .sub{margin:6px 0 0;color:#b9c2ff}
-.controls{display:flex;gap:10px;align-items:center}
+.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 select,button{font:inherit}
 select{padding:10px 12px;border-radius:12px;border:1px solid #2a3160;background:#111737;color:#e8ecff}
 button{padding:10px 14px;border-radius:12px;border:1px solid #2a3160;background:#3a5bff;color:white;cursor:pointer}
@@ -12,19 +12,34 @@ button.ghost{background:transparent;color:#e8ecff}
 main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 @media (max-width:900px){main{grid-template-columns:1fr}}
 .card{background:#111737;border:1px solid #2a3160;border-radius:18px;padding:16px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.topRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .pill{padding:6px 10px;border-radius:999px;background:#0b1020;border:1px solid #2a3160;color:#b9c2ff}
+.meta{display:flex;gap:12px;color:#b9c2ff}
+.instructions{margin-top:10px;color:#b9c2ff;font-size:13px;line-height:1.35}
 .prompt{margin:16px 0 14px;font-size:22px;line-height:1.35}
-.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:700px){.choices{grid-template-columns:1fr}}
+.area{min-height:60px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
 .choice{padding:12px;border-radius:14px;border:1px solid #2a3160;background:#0b1020;color:#e8ecff;text-align:left}
 .choice.good{border-color:#4be38a}
 .choice.bad{border-color:#ff5c7a}
 .feedback{margin-top:12px;min-height:28px;color:#b9c2ff}
-.bottom{margin-top:14px}
+.bottomRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;flex-wrap:wrap}
+.hint{color:#b9c2ff;min-height:22px}
 .progressRow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .progressBox{background:#0b1020;border:1px solid #2a3160;border-radius:14px;padding:12px}
 .progressBox .k{color:#b9c2ff;font-size:13px}
 .progressBox .v{font-size:22px;margin-top:4px}
 .note{margin:12px 0 0;color:#b9c2ff;font-size:13px}
 .footer{margin-top:14px;color:#b9c2ff;font-size:13px}
+.tileRow{display:flex;flex-wrap:wrap;gap:8px}
+.tile{padding:10px 12px;border-radius:999px;border:1px solid #2a3160;background:#0b1020;color:#e8ecff;cursor:pointer}
+.tile.used{opacity:.45}
+.builderSlots{display:flex;flex-wrap:wrap;gap:8px;padding:10px;border:1px dashed #2a3160;border-radius:14px;background:#0b1020}
+.slotItem{padding:10px 12px;border-radius:999px;border:1px solid #2a3160;background:#111737;color:#e8ecff;cursor:pointer}
+.memoryGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:700px){.memoryGrid{grid-template-columns:repeat(3,1fr)}}
+.memCard{padding:10px;border-radius:14px;border:1px solid #2a3160;background:#0b1020;color:#e8ecff;min-height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center}
+.memCard.open{background:#111737}
+.memCard.matched{border-color:#4be38a;opacity:.7}
+.sr{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}

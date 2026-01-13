@@ -1,37 +1,18 @@
-# Ori – English Words Game (No Spelling Needed)
+# Ori – English Words Games (Hebrew UI)
 
-This is a small browser game to practice *using* the vocabulary words in sentences.
+Static website (no build) with 4 mini-games to practice the vocabulary in context.
 
-## How to run (easiest)
-1. Unzip the folder
-2. Double-click `index.html`
+- Instructions/buttons/feedback: Hebrew (RTL)
+- Practice words & sentences: English only
 
-If your browser blocks local files, run a tiny local server:
+## Games
+A. Fill the Gap (multiple choice)  
+B. Two Sentences (correct / incorrect)  
+C. Sentence Builder (arrange chunks)  
+D. Memory Match (word ↔ sentence)
 
-### macOS / Linux
-```bash
-cd ori_vocab_game
-python3 -m http.server 8000
-```
-Then open: http://localhost:8000
+## Run locally
+Open `index.html` in a browser.
 
-### Windows (PowerShell)
-```powershell
-cd ori_vocab_game
-py -m http.server 8000
-```
-
-## Modes
-- **Fill the Gap**: choose the correct word for a sentence with a blank
-- **Choose the Correct Sentence**: pick the sentence that uses the word correctly
-
-## Progress
-Progress is saved automatically in the browser (`localStorage`).
-You can export/import progress as JSON (useful if she switches computers).
-
-## Hosting options (so she can use it anywhere)
-- **GitHub Pages** (free): push the folder to a repo and enable Pages
-- **Netlify** (free): drag-and-drop the folder in Netlify “Deploy manually”
-- **Vercel** (free): similar to Netlify
-
-No backend is required.
+## GitHub Pages
+Push files to repo root and enable Pages from `master / (root)`.

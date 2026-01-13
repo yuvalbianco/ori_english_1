@@ -3,38 +3,48 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>משחק מילים באנגלית</title>
+  <title>אורי – משחק תרגול מילים באנגלית</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 <div class="app">
   <header class="header">
     <div>
-      <h1>משחק תרגול מילים באנגלית</h1>
-      <p class="sub">בחרו את התשובה הנכונה. אין צורך להקליד או לאיית.</p>
+      <h1>אורי – משחק תרגול מילים באנגלית</h1>
+      <p class="sub">הוראות/כפתורים בעברית, ורק המילים והמשפטים באנגלית.</p>
     </div>
     <div class="controls">
-      <select id="mode" aria-label="מצב משחק">
-        <option value="gap">השלמת משפט</option>
-        <option value="choose">בחירת משפט נכון</option>
+      <label class="sr" for="gameSelect">בחירת משחק</label>
+      <select id="gameSelect">
+        <option value="gap">A: השלמת משפט (בחירה מרובה)</option>
+        <option value="two">B: שני משפטים (נכון / לא נכון)</option>
+        <option value="builder">C: בניית משפט (סידור חלקים)</option>
+        <option value="memory">D: משחק זיכרון (מילה ↔ משפט)</option>
       </select>
-      <button id="reset" class="ghost">איפוס התקדמות</button>
+      <button id="resetBtn" class="ghost">איפוס התקדמות</button>
     </div>
   </header>
 
   <main>
     <section class="card">
-      <div class="row">
+      <div class="topRow">
         <div class="pill" id="pill">מוכן</div>
-        <div class="stats" id="stats"></div>
+        <div class="meta">
+          <div id="streak">רצף: 0</div>
+          <div id="score">נקודות: 0</div>
+        </div>
       </div>
 
+      <div id="instructions" class="instructions"></div>
+
       <div id="prompt" class="prompt"></div>
-      <div id="choices" class="choices"></div>
+      <div id="area" class="area"></div>
 
       <div id="feedback" class="feedback" aria-live="polite"></div>
 
-      <div class="row bottom">
+      <div class="bottomRow">
+        <button id="hintBtn" class="ghost">רמז</button>
+        <div id="hint" class="hint"></div>
         <button id="nextBtn">הבא</button>
       </div>
     </section>
@@ -56,7 +66,7 @@
         </div>
       </div>
       <p class="note">
-        איך “נלמדו” עובד: מילה נחשבת “נלמדה” אחרי <strong>3 תשובות נכונות</strong> ו-<strong>0 טעויות</strong>.
+        “נלמדו” = מילה שנענתה נכון <strong>3 פעמים</strong> ו-<strong>0 טעויות</strong>.
       </p>
     </section>
   </main>
@@ -66,7 +76,7 @@
   </footer>
 </div>
 
-<script src="words.js"></script>
+<script src="data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
