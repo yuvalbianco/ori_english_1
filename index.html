@@ -1,85 +1,72 @@
 <!doctype html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Ori – English Words Game</title>
+  <title>משחק מילים באנגלית</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app">
-    <header class="header">
-      <div>
-        <h1>English Words Game</h1>
-        <p class="sub">Practice using the words in sentences (no spelling needed).</p>
+<div class="app">
+  <header class="header">
+    <div>
+      <h1>משחק תרגול מילים באנגלית</h1>
+      <p class="sub">בחרו את התשובה הנכונה. אין צורך להקליד או לאיית.</p>
+    </div>
+    <div class="controls">
+      <select id="mode" aria-label="מצב משחק">
+        <option value="gap">השלמת משפט</option>
+        <option value="choose">בחירת משפט נכון</option>
+      </select>
+      <button id="reset" class="ghost">איפוס התקדמות</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <div class="row">
+        <div class="pill" id="pill">מוכן</div>
+        <div class="stats" id="stats"></div>
       </div>
-      <div class="controls">
-        <select id="mode">
-          <option value="gap">Fill the Gap</option>
-          <option value="choose">Choose the Correct Sentence</option>
-        </select>
-        <button id="reset" class="ghost">Reset Progress</button>
+
+      <div id="prompt" class="prompt"></div>
+      <div id="choices" class="choices"></div>
+
+      <div id="feedback" class="feedback" aria-live="polite"></div>
+
+      <div class="row bottom">
+        <button id="nextBtn">הבא</button>
       </div>
-    </header>
+    </section>
 
-    <main>
-      <section class="card" id="gameCard">
-        <div class="row">
-          <div class="pill" id="pill">Ready</div>
-          <div class="stats" id="stats"></div>
+    <section class="card">
+      <h2>התקדמות</h2>
+      <div class="progressRow">
+        <div class="progressBox">
+          <div class="k">נלמדו</div>
+          <div class="v" id="masteredCount">0</div>
         </div>
-
-        <div id="prompt" class="prompt"></div>
-
-        <div id="choices" class="choices"></div>
-
-        <div class="row bottom">
-          <button id="hintBtn" class="ghost">Hint</button>
-          <div id="hint" class="hint"></div>
-          <button id="nextBtn">Next</button>
+        <div class="progressBox">
+          <div class="k">דורשות חזרה</div>
+          <div class="v" id="reviewCount">0</div>
         </div>
-      </section>
-
-      <section class="card">
-        <h2>Progress</h2>
-        <div class="progressRow">
-          <div class="progressBox">
-            <div class="k">Mastered</div>
-            <div class="v" id="masteredCount">0</div>
-          </div>
-          <div class="progressBox">
-            <div class="k">Needs review</div>
-            <div class="v" id="reviewCount">0</div>
-          </div>
-          <div class="progressBox">
-            <div class="k">Total words</div>
-            <div class="v" id="totalCount">0</div>
-          </div>
+        <div class="progressBox">
+          <div class="k">סה״כ מילים</div>
+          <div class="v" id="totalCount">0</div>
         </div>
+      </div>
+      <p class="note">
+        איך “נלמדו” עובד: מילה נחשבת “נלמדה” אחרי <strong>3 תשובות נכונות</strong> ו-<strong>0 טעויות</strong>.
+      </p>
+    </section>
+  </main>
 
-        <details>
-          <summary>Words to review</summary>
-          <div id="reviewList" class="reviewList"></div>
-        </details>
+  <footer class="footer">
+    <span>טיפ: 10 דקות ביום עדיפות על שעה פעם בשבוע</span>
+  </footer>
+</div>
 
-        <details>
-          <summary>Export / Import progress</summary>
-          <div class="io">
-            <button id="exportBtn" class="ghost">Export JSON</button>
-            <input id="importFile" type="file" accept="application/json" />
-            <button id="importBtn" class="ghost">Import</button>
-          </div>
-          <pre id="exportOut" class="exportOut"></pre>
-        </details>
-      </section>
-    </main>
-
-    <footer class="footer">
-      <span>Tip: 10 minutes a day beats 1 hour once a week.</span>
-    </footer>
-  </div>
-
-  <script src="words.js"></script>
-  <script src="app.js"></script>
+<script src="words.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
