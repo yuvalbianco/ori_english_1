@@ -1,0 +1,113 @@
+Core Palette (Iconic)
+
+Simpsons Yellow (Skin Tone)
+
+#FFD90F
+
+Primary identifying color of the show
+
+Sky Blue
+
+#70D1FE
+
+Used for skies and open backgrounds
+
+Pure White
+
+#FFFFFF
+
+Eyes, clouds, highlights
+
+Jet Black
+
+#000000
+
+Outlines, pupils, hair details
+
+Character Accent Colors
+
+Homer / Bart Blue (Pants / Shorts)
+
+#009DDC
+
+Marge Green (Dress)
+
+#3FAF2A
+
+Marge Hair Blue
+
+#2B6CC4
+
+Lisa / Maggie Orange
+
+#F05A28
+
+Red (Bart Shirt, Krusty details)
+
+#E01B24
+
+Background & Environment Colors
+
+Springfield Grass Green
+
+#7ED957
+
+Purple (Shadows / Furniture)
+
+#7B4EA3
+
+Brown (Furniture / Hair)
+
+#8B5A2B
+
+Gray (Roads / Buildings)
+
+#B0B0B0
+
+Design Rules (Very Important)
+
+To look “Simpsons-authentic”, follow these rules:
+
+No gradients
+Colors are flat fills only.
+
+Black outlines everywhere
+Uniform stroke thickness.
+
+High saturation
+Colors are vivid and unapologetic.
+
+Simple shading (optional)
+When used, it’s usually one darker flat tone — no blending.
+
+Typical Simpsons Color Combinations
+
+Characters: #FFD90F skin + bold clothing colors
+
+Sky: #70D1FE
+
+Grass: #7ED957
+
+Outlines: #000000
+
+If You’re Designing in Simpsons Style
+
+Starter palette:
+
+Yellow: #FFD90F
+
+Blue: #70D1FE
+
+Green: #3FAF2A
+
+Red: #E01B24
+
+Black: #000000
+
+If you want, I can:
+
+Generate a Figma / Illustrator swatch file
+
+Convert this to CSS / Tailwind
+
+Help you Simpson-ify an existing illustration or UI

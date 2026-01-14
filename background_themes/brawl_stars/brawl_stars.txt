@@ -1,0 +1,126 @@
+Core Palette (Brand & UI)
+
+Brawl Yellow (Star Icon)
+
+#FFD21E
+
+Electric Blue
+
+#2EA8FF
+
+Deep Navy / UI Shadow
+
+#1C2B39
+
+Pure White
+
+#FFFFFF
+
+Pure Black
+
+#000000
+
+Primary Character Colors
+
+Punch Red
+
+#FF3B3B
+
+Attacks, damage, aggressive brawlers
+
+Poison Green
+
+#00E676
+
+Toxic effects, gadgets
+
+Candy Pink
+
+#FF5EC7
+
+Cute / flashy brawlers
+
+Royal Purple
+
+#8A4FFF
+
+Magic, mythic themes
+
+Environment & FX Colors
+
+Sand / Desert Yellow
+
+#F2C94C
+
+Grass Green
+
+#6EEB83
+
+Stone Gray
+
+#B0BEC5
+
+Explosion Orange
+
+#FF8C1A
+
+UI & Rarity Colors
+
+Common / Neutral
+
+#9E9E9E
+
+Rare
+
+#4CAF50
+
+Super Rare
+
+#2196F3
+
+Epic
+
+#9C27B0
+
+Mythic
+
+#E91E63
+
+Legendary
+
+#FFD700
+
+Design Rules (Very Important)
+
+Extreme saturation
+
+Strong outlines & shadows
+
+Clear silhouettes
+
+Color = function (damage, rarity, effects)
+
+Readable at small sizes
+
+Quick “Brawl Stars” Starter Palette
+Yellow   #FFD21E
+Blue     #2EA8FF
+Red      #FF3B3B
+Green    #00E676
+Purple   #8A4FFF
+White    #FFFFFF
+Navy     #1C2B39
+
+If You’re Designing Something Brawl Stars–Style
+
+I can:
+
+Convert this to Roblox Color3 values
+
+Build rarity systems using this palette
+
+Adapt it for UI buttons, icons, or VFX
+
+Tune saturation for accessibility
+
+Tell me what you’re building and I’ll tailor it exactly.

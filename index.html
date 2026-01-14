@@ -43,31 +43,14 @@
       <div id="feedback" class="feedback" aria-live="polite"></div>
 
       <div class="bottomRow">
-        <button id="hintBtn" class="ghost">רמז</button>
-        <div id="hint" class="hint"></div>
         <button id="nextBtn">הבא</button>
       </div>
     </section>
 
     <section class="card">
-      <h2>התקדמות</h2>
-      <div class="progressRow">
-        <div class="progressBox">
-          <div class="k">נלמדו</div>
-          <div class="v" id="masteredCount">0</div>
-        </div>
-        <div class="progressBox">
-          <div class="k">דורשות חזרה</div>
-          <div class="v" id="reviewCount">0</div>
-        </div>
-        <div class="progressBox">
-          <div class="k">סה״כ מילים</div>
-          <div class="v" id="totalCount">0</div>
-        </div>
-      </div>
-      <p class="note">
-        “נלמדו” = מילה שנענתה נכון <strong>3 פעמים</strong> ו-<strong>0 טעויות</strong>.
-      </p>
+      <h2>רשימת מילים</h2>
+      <p class="note">3 תשובות נכונות = המילה נלמדה. 5 טעויות = -1 נקודת למידה.</p>
+      <div id="wordsTableContainer" class="words-table-container"></div>
     </section>
   </main>
 

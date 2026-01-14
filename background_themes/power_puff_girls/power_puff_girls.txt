@@ -1,0 +1,108 @@
+Core Palette (Signature Colors)
+
+Bubblegum Pink
+
+#FF66B2
+
+Used for: Blossom, hearts, accents
+
+Mint Green
+
+#66FFCC
+
+Used for: Buttercup, backgrounds
+
+Baby Blue / Cyan
+
+#66CCFF
+
+Used for: Bubbles, sky elements
+
+Pure Black
+
+#000000
+
+Used for: outlines, eyes, facial details
+
+Pure White
+
+#FFFFFF
+
+Used for: eyes, highlights
+
+Character-Specific Palettes
+Blossom
+
+Pink: #FF66B2
+
+Red Bow: #E60026
+
+Orange Hair: #FF9933
+
+Bubbles
+
+Blue: #66CCFF
+
+Blonde Hair: #FFF2A6
+
+Buttercup
+
+Green: #66FF66
+
+Black Hair: #000000
+
+Background & Accent Colors
+
+Lavender Purple
+
+#CC99FF
+
+Sunny Yellow
+
+#FFF066
+
+Soft Peach
+
+#FFCC99
+
+Neon Red (Villains / Danger)
+
+#FF0033
+
+Design Rules (Critical for Authentic Look)
+
+Flat colors only – no gradients
+
+Thick black outlines everywhere
+
+High contrast between characters and background
+
+Simple geometric shapes (circles, ovals, blocks)
+
+Typical Powerpuff Color Combos
+
+Blossom scenes: Pink + lavender + white
+
+Bubbles scenes: Blue + yellow + white
+
+Buttercup scenes: Green + black + neon accents
+
+Quick “Powerpuff-Style” Starter Palette
+
+Pink: #FF66B2
+
+Blue: #66CCFF
+
+Green: #66FF66
+
+Black: #000000
+
+White: #FFFFFF
+
+If you want, I can:
+
+Convert this into CSS / Tailwind / Figma swatches
+
+Match the palette to a specific character
+
+Help you restyle an illustration or UI into Powerpuff Girls style

@@ -1,7 +1,145 @@
 
-const STORE_KEY = "ori_all_games_progress_v1";
+const STORE_KEY = "ori_all_games_progress_v2";
 const MASTERED_CORRECT = 3;
-const MASTERED_WRONG_MAX = 0;
+const WRONG_PENALTY_THRESHOLD = 5;
+
+// ========== THEME SYSTEM ==========
+const THEMES = [
+  {
+    name: "Stranger Things",
+    bgColor: "#0B0B0B",
+    bgImage: "url('background_themes/stranger_things/stranger%20things%20wallpaper1.jpg')",
+    cardBg: "rgba(11,11,11,0.85)",
+    cardBorder: "#6A040F",
+    primary: "#B1060F",
+    primaryGlow: "#E50914",
+    secondary: "#1F3C88",
+    accent: "#2EC4B6",
+    text: "#f0e6e6",
+    textMuted: "#a89999",
+    inputBg: "#1a0a0a",
+    success: "#2EC4B6",
+    error: "#E50914"
+  },
+  {
+    name: "Simpsons",
+    bgColor: "#70D1FE",
+    bgImage: "url('background_themes/simpsons/simpsons.jpg')",
+    cardBg: "rgba(255,217,15,0.9)",
+    cardBorder: "#000000",
+    primary: "#FFD90F",
+    primaryGlow: "#FFEB3B",
+    secondary: "#009DDC",
+    accent: "#3FAF2A",
+    text: "#000000",
+    textMuted: "#333333",
+    inputBg: "#FFFFFF",
+    success: "#3FAF2A",
+    error: "#E01B24"
+  },
+  {
+    name: "Powerpuff Girls",
+    bgColor: "#FFB6C9",
+    bgImage: "url('background_themes/power_puff_girls/power_puff_girls.jpg')",
+    cardBg: "rgba(255,102,178,0.85)",
+    cardBorder: "#000000",
+    primary: "#FF66B2",
+    primaryGlow: "#FF99CC",
+    secondary: "#66CCFF",
+    accent: "#66FF66",
+    text: "#000000",
+    textMuted: "#333333",
+    inputBg: "#FFFFFF",
+    success: "#66FF66",
+    error: "#FF0033"
+  },
+  {
+    name: "99 Nights Forest",
+    bgColor: "#1E252B",
+    bgImage: "url('background_themes/ninety_nine_nights_in_the_forest/ninety_nine_forest.webp')",
+    cardBg: "rgba(47,62,43,0.85)",
+    cardBorder: "#4F6B3A",
+    primary: "#4F6B3A",
+    primaryGlow: "#6EEB83",
+    secondary: "#A33A3A",
+    accent: "#D6C36A",
+    text: "#E6E6E6",
+    textMuted: "#A0A4A0",
+    inputBg: "#2F3E2B",
+    success: "#6EEB83",
+    error: "#A33A3A"
+  },
+  {
+    name: "Dress to Impress",
+    bgColor: "#F7F7F7",
+    bgImage: "url('background_themes/dress_to_impress/dress-to-impress.jpg')",
+    cardBg: "rgba(201,183,226,0.9)",
+    cardBorder: "#FF4FA3",
+    primary: "#FF4FA3",
+    primaryGlow: "#FF79B8",
+    secondary: "#C9B7E2",
+    accent: "#E6C15A",
+    text: "#2B2B2B",
+    textMuted: "#555555",
+    inputBg: "#FFFFFF",
+    success: "#BFF0D4",
+    error: "#E53935"
+  },
+  {
+    name: "Brawl Stars",
+    bgColor: "#1C2B39",
+    bgImage: "url('background_themes/brawl_stars/brawl_stars.jpg')",
+    cardBg: "rgba(28,43,57,0.9)",
+    cardBorder: "#FFD21E",
+    primary: "#FFD21E",
+    primaryGlow: "#FFEB3B",
+    secondary: "#2EA8FF",
+    accent: "#FF3B3B",
+    text: "#FFFFFF",
+    textMuted: "#B0BEC5",
+    inputBg: "#1C2B39",
+    success: "#00E676",
+    error: "#FF3B3B"
+  }
+];
+
+let currentThemeIndex = 0;
+
+function applyTheme(index) {
+  const theme = THEMES[index];
+  const root = document.documentElement;
+
+  root.style.setProperty('--bg-color', theme.bgColor);
+  root.style.setProperty('--bg-image', theme.bgImage);
+  root.style.setProperty('--card-bg', theme.cardBg);
+  root.style.setProperty('--card-border', theme.cardBorder);
+  root.style.setProperty('--primary', theme.primary);
+  root.style.setProperty('--primary-glow', theme.primaryGlow);
+  root.style.setProperty('--secondary', theme.secondary);
+  root.style.setProperty('--accent', theme.accent);
+  root.style.setProperty('--text', theme.text);
+  root.style.setProperty('--text-muted', theme.textMuted);
+  root.style.setProperty('--input-bg', theme.inputBg);
+  root.style.setProperty('--success', theme.success);
+  root.style.setProperty('--error', theme.error);
+
+  // Update theme indicator
+  let indicator = document.getElementById('themeIndicator');
+  if (!indicator) {
+    indicator = document.createElement('div');
+    indicator.id = 'themeIndicator';
+    indicator.className = 'theme-indicator';
+    document.body.appendChild(indicator);
+  }
+  indicator.textContent = theme.name;
+}
+
+function nextTheme() {
+  currentThemeIndex = (currentThemeIndex + 1) % THEMES.length;
+  applyTheme(currentThemeIndex);
+}
+
+// ========== END THEME SYSTEM ==========
 
 function norm(w){ return w.toLowerCase(); }
 function load(){ return JSON.parse(localStorage.getItem(STORE_KEY) || "{}"); }
@@ -19,10 +157,11 @@ let current = null;
 let answered = false;
 let memory = { deck: [], open: [], matched: new Set() };
 
-function masteredFor(key){
+function isLearned(key){
   const p = state.words[key];
-  return (p.c >= MASTERED_CORRECT) && (p.w <= MASTERED_WRONG_MAX);
+  return p && p.c >= MASTERED_CORRECT;
 }
+
 function remainingToMaster(key){
   const p = state.words[key];
   return Math.max(0, MASTERED_CORRECT - p.c);
@@ -30,7 +169,6 @@ function remainingToMaster(key){
 
 function setPill(t){ document.getElementById("pill").textContent = t; }
 function setFeedback(t){ document.getElementById("feedback").textContent = t || ""; }
-function setHint(t){ document.getElementById("hint").textContent = t || ""; }
 function setPrompt(t){ document.getElementById("prompt").textContent = t || ""; }
 function setAreaHTML(html){ document.getElementById("area").innerHTML = html || ""; }
 
@@ -38,13 +176,34 @@ function updateMeta(){
   document.getElementById("score").textContent = "נקודות: " + (state.score||0);
   document.getElementById("streak").textContent = "רצף: " + (state.streak||0);
 }
-function updateProgressBox(){
-  const keys = Object.keys(state.words);
-  let mastered=0, review=0;
-  keys.forEach(k => masteredFor(k) ? mastered++ : review++);
-  document.getElementById("masteredCount").textContent = mastered;
-  document.getElementById("reviewCount").textContent = review;
-  document.getElementById("totalCount").textContent = GAME_DATA.words.length;
+
+function updateWordsTable(){
+  const container = document.getElementById("wordsTableContainer");
+  if (!container) return;
+
+  let html = `<table class="words-table">
+    <thead>
+      <tr>
+        <th>מילה</th>
+        <th>נכון</th>
+        <th>נלמד</th>
+      </tr>
+    </thead>
+    <tbody>`;
+
+  GAME_DATA.words.forEach(d => {
+    const key = norm(d.word);
+    const p = state.words[key] || {c:0, w:0};
+    const learned = p.c >= MASTERED_CORRECT;
+    html += `<tr class="${learned ? 'learned' : ''}">
+      <td class="word-cell">${d.word}</td>
+      <td class="count-cell">${Math.min(p.c, MASTERED_CORRECT)}/${MASTERED_CORRECT}</td>
+      <td class="status-cell">${learned ? '✓' : '✗'}</td>
+    </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
 }
 
 function instructionsFor(game){
@@ -59,32 +218,75 @@ function setGame(game){
   state.game = game;
   save(state);
   document.getElementById("instructions").textContent = instructionsFor(game);
-  setHint("");
   setFeedback("");
   render();
 }
 
 function onCorrect(wordKey){
+  const wasLearned = isLearned(wordKey);
+  state.words[wordKey].c++;
+  state.words[wordKey].w = 0; // Reset wrong counter on correct
   state.score = (state.score||0) + 10;
   state.streak = (state.streak||0) + 1;
+
+  const nowLearned = isLearned(wordKey);
   const left = remainingToMaster(wordKey);
-  const nowMastered = masteredFor(wordKey);
-  if(nowMastered && left===0 && state.words[wordKey].w===0 && state.words[wordKey].c===MASTERED_CORRECT){
-    setFeedback("מצוין! המילה נלמדה.");
-  } else if(!nowMastered){
-    setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה נלמדת.`);
+
+  // Find the original word (with correct casing)
+  const originalWord = GAME_DATA.words.find(w => norm(w.word) === wordKey)?.word || wordKey;
+
+  if(nowLearned && !wasLearned){
+    setFeedback(`מצוין! המילה "${originalWord}" נלמדה! 🎉`);
+    nextTheme(); // Change theme when word is learned
+  } else if(!nowLearned){
+    setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה "${originalWord}" נלמדת.`);
   } else {
     setFeedback("מצוין!");
   }
+
+  save(state);
+  updateMeta();
+  updateWordsTable();
 }
-function onWrong(){
+
+function onWrong(wordKey){
+  state.words[wordKey].w++;
   state.streak = 0;
-  setFeedback("לא נורא, ננסה שוב בהמשך.");
+
+  // Check if we need to deduct a correct point
+  if(state.words[wordKey].w >= WRONG_PENALTY_THRESHOLD){
+    if(state.words[wordKey].c > 0){
+      state.words[wordKey].c--;
+      setFeedback("לא נורא. 5 טעויות = -1 נקודת למידה. ננסה שוב!");
+    } else {
+      setFeedback("לא נורא, ננסה שוב בהמשך.");
+    }
+    state.words[wordKey].w = 0; // Reset wrong counter
+  } else {
+    const wrongsLeft = WRONG_PENALTY_THRESHOLD - state.words[wordKey].w;
+    setFeedback(`לא נורא. עוד ${wrongsLeft} טעויות ותאבד נקודת למידה.`);
+  }
+
+  save(state);
+  updateMeta();
+  updateWordsTable();
+}
+
+// Get unlearned words only
+function getUnlearnedWords(dataArray, wordField = 'word'){
+  return dataArray.filter(item => {
+    const key = norm(item[wordField]);
+    return !isLearned(key);
+  });
 }
 
 function pickGap(){
+  const unlearned = getUnlearnedWords(GAME_DATA.gap);
+  if(unlearned.length === 0){
+    return null; // All words learned!
+  }
   const pool = [];
-  GAME_DATA.gap.forEach(q => {
+  unlearned.forEach(q => {
     const key = norm(q.word);
     const p = state.words[key] || {c:0,w:0};
     const weight = 1 + Math.min(5, p.w);
@@ -96,10 +298,16 @@ function pickGap(){
 function renderGap(){
   answered=false;
   const q = pickGap();
+  if(!q){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    return;
+  }
   current = { type:"gap", q };
   setPill("בחר תשובה");
   setPrompt(q.question);
-  setHint("");
   setFeedback("");
   setAreaHTML(`<div class="grid2" id="gapChoices"></div>`);
   const box = document.getElementById("gapChoices");
@@ -118,31 +326,38 @@ function answerGap(choice, btn){
   const q = current.q;
   const key = norm(q.word);
   if(choice === q.answer){
-    state.words[key].c++;
     setPill("נכון");
     btn.classList.add("good");
     onCorrect(key);
   } else {
-    state.words[key].w++;
     setPill("לא נכון");
     btn.classList.add("bad");
     [...document.querySelectorAll("#gapChoices .choice")].forEach(b => {
       if(b.textContent === q.answer) b.classList.add("good");
     });
-    onWrong();
+    onWrong(key);
   }
-  save(state);
-  updateMeta();
-  updateProgressBox();
+}
+
+function pickTwo(){
+  const unlearned = getUnlearnedWords(GAME_DATA.two);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
 }
 
 function renderTwo(){
   answered=false;
-  const item = GAME_DATA.two[Math.floor(Math.random()*GAME_DATA.two.length)];
+  const item = pickTwo();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    return;
+  }
   current = { type:"two", item };
   setPill("בחר תשובה");
   setPrompt("Word: " + item.word);
-  setHint("");
   setFeedback("");
   setAreaHTML(`
     <div class="grid2" id="twoChoices">
@@ -165,35 +380,38 @@ function answerTwo(isCorrect, btn){
   answered=true;
   const key = norm(current.item.word);
   if(isCorrect){
-    state.words[key].c++;
     setPill("נכון");
     btn.classList.add("good");
     onCorrect(key);
   } else {
-    state.words[key].w++;
     setPill("לא נכון");
     btn.classList.add("bad");
     [...document.querySelectorAll("#twoChoices .choice")].forEach(b=>{
       if(b.textContent === current.item.correct) b.classList.add("good");
     });
-    onWrong();
+    onWrong(key);
   }
-  save(state);
-  updateMeta();
-  updateProgressBox();
 }
 
 function pickBuilder(){
-  return GAME_DATA.builder[Math.floor(Math.random()*GAME_DATA.builder.length)];
+  const unlearned = getUnlearnedWords(GAME_DATA.builder);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
 }
 
 function renderBuilder(){
   answered=false;
   const item = pickBuilder();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    return;
+  }
   current = { type:"builder", item, built: [] };
   setPill("בנו משפט");
   setPrompt("סדרו את החלקים כדי ליצור את המשפט:");
-  setHint("");
   setFeedback("");
 
   const tokens = [...item.tokens];
@@ -243,24 +461,28 @@ function answerBuilder(){
   const target=current.item.tokens.join(" ");
   const key=norm(current.item.word);
   if(built===target){
-    state.words[key].c++;
     setPill("נכון");
     onCorrect(key);
   } else {
-    state.words[key].w++;
     setPill("לא נכון");
-    onWrong();
+    onWrong(key);
     setFeedback("לא נורא. המשפט הנכון הוא: " + current.item.sentence);
   }
-  save(state); updateMeta(); updateProgressBox();
 }
 
 function newMemoryGame(){
-  const sample=[...GAME_DATA.memory].sort(()=>0.5-Math.random()).slice(0,8);
+  // Only use unlearned words for memory game
+  const unlearned = getUnlearnedWords(GAME_DATA.memory);
+  if(unlearned.length === 0){
+    memory.deck = [];
+    return;
+  }
+  const sampleSize = Math.min(8, unlearned.length);
+  const sample = [...unlearned].sort(()=>0.5-Math.random()).slice(0, sampleSize);
   const deck=[];
   sample.forEach(p=>{
-    deck.push({type:"word", id:p.id, text:p.word});
-    deck.push({type:"sentence", id:p.id, text:p.sentence});
+    deck.push({type:"word", id:p.id, text:p.word, wordKey: norm(p.word)});
+    deck.push({type:"sentence", id:p.id, text:p.sentence, wordKey: norm(p.word)});
   });
   deck.sort(()=>0.5-Math.random());
   memory.deck=deck; memory.open=[]; memory.matched=new Set();
@@ -271,8 +493,18 @@ function renderMemory(){
   current={type:"memory"};
   setPill("זיכרון");
   setPrompt("מצאו זוג מתאים: מילה ↔ משפט");
-  setHint(""); setFeedback("");
+  setFeedback("");
+
   if(!memory.deck.length) newMemoryGame();
+
+  if(memory.deck.length === 0){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    return;
+  }
+
   setAreaHTML(`<div class="memoryGrid" id="memGrid"></div>`);
   const grid=document.getElementById("memGrid");
 
@@ -295,17 +527,32 @@ function renderMemory(){
           memory.matched.add(a); memory.matched.add(b);
           state.score=(state.score||0)+15;
           state.streak=(state.streak||0)+1;
-          setFeedback("מצוין! זוג נכון.");
-          const word=(ca.type==="word")?ca.text:cb.text;
-          const key=norm(word);
-          state.words[key].c++;
-          save(state); updateMeta(); updateProgressBox();
-          memory.open=[];
-          if(memory.matched.size===memory.deck.length){
-            setFeedback("כל הכבוד! סיימתם סבב. מתחילים סבב חדש.");
-            newMemoryGame();
+
+          const wordKey = ca.wordKey;
+          const wasLearned = isLearned(wordKey);
+          state.words[wordKey].c++;
+          state.words[wordKey].w = 0;
+          const nowLearned = isLearned(wordKey);
+
+          if(nowLearned && !wasLearned){
+            setFeedback("מצוין! המילה נלמדה! 🎉");
+          } else {
+            setFeedback("מצוין! זוג נכון.");
           }
-          setTimeout(()=>renderMemory(),450);
+
+          save(state); updateMeta(); updateWordsTable();
+          memory.open=[];
+
+          if(memory.matched.size===memory.deck.length){
+            setFeedback("כל הכבוד! סיימתם סבב! 🎉");
+            nextTheme(); // Change theme when memory game completed
+            setTimeout(()=>{
+              newMemoryGame();
+              renderMemory();
+            }, 1500);
+          } else {
+            setTimeout(()=>renderMemory(),450);
+          }
         } else {
           state.streak=0;
           setFeedback("לא מתאים. נסו שוב.");
@@ -319,7 +566,7 @@ function renderMemory(){
 }
 
 function render(){
-  updateMeta(); updateProgressBox();
+  updateMeta(); updateWordsTable();
   const g=document.getElementById("gameSelect").value;
   state.game=g; save(state);
   document.getElementById("instructions").textContent=instructionsFor(g);
@@ -331,17 +578,6 @@ function render(){
 }
 
 document.getElementById("gameSelect").addEventListener("change", e=>setGame(e.target.value));
-
-document.getElementById("hintBtn").onclick=()=>{
-  if(!current) return;
-  let word="";
-  if(current.type==="gap") word=current.q.word;
-  if(current.type==="two") word=current.item.word;
-  if(current.type==="builder") word=current.item.word;
-  if(current.type==="memory") { setHint("נסו לזכור: מילה מתאימה למשפט שמשתמש בה."); return; }
-  const h=GAME_DATA.words.find(x=>x.word===word)?.hint_he || "";
-  setHint(h ? ("רמז: " + h) : "אין רמז למילה הזו.");
-};
 
 document.getElementById("nextBtn").onclick=()=>{
   if(state.game==="builder"){
@@ -358,9 +594,13 @@ document.getElementById("resetBtn").onclick=()=>{
   state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
   memory={deck:[], open:[], matched:new Set()};
+  currentThemeIndex = 0;
+  applyTheme(0);
   save(state);
   render();
 };
 
+// Initialize
 document.getElementById("gameSelect").value = state.game || "gap";
+applyTheme(currentThemeIndex);
 render();

@@ -1,0 +1,109 @@
+Core Environment Palette (Forest & Atmosphere)
+
+Dark Forest Green
+
+#2F3E2B
+
+Trees, foliage, shadowed ground
+
+Moss Green
+
+#4F6B3A
+
+Grass, undergrowth, survival camps
+
+Dirt Brown
+
+#5A4A3A
+
+Paths, soil, forest floor
+
+Bark Brown
+
+#3B2F26
+
+Tree trunks, wooden structures
+
+Lighting & Mood Colors
+
+Fog Gray
+
+#A0A4A0
+
+Mist, distance fade, atmosphere
+
+Overcast Sky Gray
+
+#7A7F7C
+
+Cloudy sky, low visibility
+
+Night Blue-Gray
+
+#1E252B
+
+Night cycle, danger moments
+
+UI & Interaction Accents
+
+Muted Yellow (Loot / Highlight)
+
+#D6C36A
+
+Items, interaction hints
+
+Warning Red
+
+#A33A3A
+
+Danger, damage, enemies
+
+Cold White
+
+#E6E6E6
+
+Text, minimal UI contrast
+
+Design Characteristics (Important)
+
+To keep it authentic to 99 Days in the Forest:
+
+Low saturation overall
+
+No neon colors
+
+Soft contrast (nothing pops too much)
+
+Natural palettes only (greens, browns, grays)
+
+Fog + darkness do a lot of the visual work
+
+Quick Starter Palette (Most Representative)
+Forest Green  #2F3E2B
+Moss Green    #4F6B3A
+Dirt Brown    #5A4A3A
+Fog Gray      #A0A4A0
+Night Blue    #1E252B
+Warning Red   #A33A3A
+
+If You’re Using This Practically
+
+If you’re:
+
+Building a Roblox game inspired by it
+
+Designing UI / thumbnails
+
+Making fan art or assets
+
+I can:
+
+Tune this palette for day vs night cycles
+
+Convert it to Roblox Color3 values
+
+Create a fog-heavy horror variant
+
+Match it exactly to UI vs environment colors
+
+Just tell me what you’re using it for.

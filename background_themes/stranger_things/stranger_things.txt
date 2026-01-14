@@ -1,0 +1,95 @@
+The Stranger Things color palette is deliberately cinematic and retro, drawing from 1980s horror, sci-fi, and neon signage. It is dominated by dark, moody bases with high-contrast neon accents.
+
+Below is a commonly accepted, production-style palette that matches the show’s branding, title sequence, and key visual language.
+
+Core Palette (Primary)
+
+Black / Near Black
+
+#0B0B0B
+
+Used for: background, negative space, night scenes
+
+Blood Red (Title Red)
+
+#B1060F
+
+Used for: logo, danger, Upside Down energy
+
+This is the most iconic Stranger Things color
+
+Dark Crimson
+
+#6A040F
+
+Used for: shadows, depth behind the title glow
+
+Neon & Accent Colors (Secondary)
+
+Neon Red Glow
+
+#E50914
+
+Used for: glowing text edges, light leaks, neon effects
+
+Electric Blue
+
+#1F3C88
+
+Used for: sci-fi elements, night lighting, lab scenes
+
+Cold Cyan / Teal
+
+#2EC4B6
+
+Used for: supernatural light, portals, electricity
+
+Atmospheric / Supporting Colors
+
+Fog Gray
+
+#BFBFBF
+
+Used for: smoke, mist, eerie ambience
+
+Dirty Beige / Retro Paper
+
+#E6D3A3
+
+Used for: 80s interiors, school walls, props
+
+Upside Down Brown-Green
+
+#3A3F2D
+
+Used for: decay, organic horror tones
+
+Typical Usage Pattern
+
+Background: Near black (#0B0B0B)
+
+Primary focus: Blood red (#B1060F) with neon red glow (#E50914)
+
+Contrast lighting: Electric blue (#1F3C88) or teal (#2EC4B6)
+
+Texture & atmosphere: Grays and muted browns
+
+If You’re Designing Something Inspired by Stranger Things
+
+Best combo:
+
+Background: #0B0B0B
+
+Headline / logo: #B1060F + glow #E50914
+
+Accent lights: #1F3C88
+
+Subtle highlights: #2EC4B6
+
+If you want, I can:
+
+Convert this into a CSS / Tailwind / Figma palette
+
+Tune it for dark UI, poster design, or logo typography
+
+Create a modernized vs authentic 80s version of the palette
