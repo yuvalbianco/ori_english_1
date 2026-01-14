@@ -44,12 +44,13 @@
 
       <div class="bottomRow">
         <button id="nextBtn">הבא</button>
+        <div id="themeCounter" class="theme-counter"></div>
       </div>
     </section>
 
     <section class="card">
       <h2>רשימת מילים</h2>
-      <p class="note">3 תשובות נכונות = המילה נלמדה. 5 טעויות = -1 נקודת למידה.</p>
+      <p class="note">3 תשובות נכונות = המילה נלמדה. 2 טעויות = -1 נקודת למידה.</p>
       <div id="wordsTableContainer" class="words-table-container"></div>
     </section>
   </main>
@@ -57,6 +58,10 @@
   <footer class="footer">
     <span>טיפ: 10 דקות ביום עדיפות על שעה פעם בשבוע</span>
   </footer>
+</div>
+
+<div id="gifPopup" class="gif-popup hidden">
+  <img id="gifImage" src="" alt="Celebration!">
 </div>
 
 <script src="data.js"></script>

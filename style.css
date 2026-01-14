@@ -388,3 +388,52 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 .words-table-container::-webkit-scrollbar-thumb:hover{
   background:var(--primary);
 }
+
+/* Theme counter */
+.theme-counter{
+  color:var(--text-muted);
+  font-size:13px;
+  margin-top:8px;
+}
+
+/* GIF popup celebration */
+.gif-popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%) scale(0);
+  z-index:1000;
+  pointer-events:none;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  opacity:0;
+}
+
+.gif-popup.show{
+  transform:translate(-50%, -50%) scale(1);
+  opacity:1;
+  animation: bounceIn 0.5s ease-out;
+}
+
+.gif-popup.hide{
+  transform:translate(-50%, -50%) scale(0);
+  opacity:0;
+}
+
+.gif-popup.hidden{
+  display:none;
+}
+
+.gif-popup img{
+  max-width:300px;
+  max-height:300px;
+  border-radius:16px;
+  box-shadow:0 0 40px rgba(0,0,0,0.8), 0 0 80px var(--primary-glow);
+  border:3px solid var(--primary);
+}
+
+@keyframes bounceIn{
+  0%{transform:translate(-50%, -50%) scale(0);}
+  50%{transform:translate(-50%, -50%) scale(1.1);}
+  70%{transform:translate(-50%, -50%) scale(0.95);}
+  100%{transform:translate(-50%, -50%) scale(1);}
+}

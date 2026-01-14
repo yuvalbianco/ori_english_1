@@ -1,0 +1,110 @@
+Core Magical Palette
+
+Midnight Black
+
+#0B0D10
+
+Shadows, night scenes, mystery
+
+Parchment Beige
+
+#F2E6C9
+
+Paper, spell books, backgrounds
+
+Antique Gold
+
+#C9A24D
+
+Magic, crests, special moments
+
+Stone Gray
+
+#7A7F85
+
+Hogwarts walls, castles
+
+House Colors (Primary)
+Gryffindor
+
+Crimson Red: #7F0909
+
+Gold: #FFC500
+
+Slytherin
+
+Emerald Green: #1A472A
+
+Silver: #AAAAAA
+
+Ravenclaw
+
+Deep Blue: #0E1A40
+
+Bronze: #946B2D
+
+Hufflepuff
+
+Mustard Yellow: #ECB939
+
+Charcoal Black: #372E29
+
+Atmosphere & Magic Accents
+
+Deep Forest Green
+
+#2C3E2F
+
+Grounds, Forbidden Forest
+
+Midnight Blue
+
+#1C2541
+
+Astronomy, night magic
+
+Spell Glow Blue
+
+#6EC6FF
+
+Wand effects, enchantments
+
+Potion Purple
+
+#5A3E7A
+
+Potions, mystery
+
+Design Rules (Very Important)
+
+Prefer desaturated, aged tones
+
+Avoid neon or flat cartoon colors
+
+Use texture (paper, stone, fabric)
+
+Metallics should feel antique, not shiny
+
+Light sources should feel candle-lit
+
+Quick “Harry Potter” Starter Palette
+Parchment Beige  #F2E6C9
+Midnight Black   #0B0D10
+Antique Gold     #C9A24D
+Stone Gray       #7A7F85
+Midnight Blue    #1C2541
+Forest Green     #2C3E2F
+Potion Purple    #5A3E7A
+
+
+If you want, I can:
+
+Create house-specific palettes
+
+Adapt this for print vs digital
+
+Build a wizard-school UI theme
+
+Make a kid-friendly vs cinematic version
+
+Just tell me how you’ll use it.
