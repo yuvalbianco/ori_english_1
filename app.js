@@ -1,7 +1,8 @@
 
 const STORE_KEY = "ori_all_games_progress_v2";
 const MASTERED_CORRECT = 3;
-const WRONG_PENALTY_THRESHOLD = 5;
+const WRONG_PENALTY_THRESHOLD = 2;
+const CORRECT_FOR_THEME = 10;
 
 // ========== THEME SYSTEM ==========
 const THEMES = [
@@ -100,6 +101,70 @@ const THEMES = [
     inputBg: "#1C2B39",
     success: "#00E676",
     error: "#FF3B3B"
+  },
+  {
+    name: "Back to the Future",
+    bgColor: "#0A0A0A",
+    bgImage: "url('background_themes/back%20to%20the%20future/back_to_the_future.jpg')",
+    cardBg: "rgba(10,10,10,0.85)",
+    cardBorder: "#FF6A00",
+    primary: "#FF6A00",
+    primaryGlow: "#FFD23F",
+    secondary: "#1F5FFF",
+    accent: "#00E5FF",
+    text: "#F5F7FA",
+    textMuted: "#8A8F98",
+    inputBg: "#0A0A0A",
+    success: "#2FB7A1",
+    error: "#C41E3A"
+  },
+  {
+    name: "Harry Potter",
+    bgColor: "#0B0D10",
+    bgImage: "url('background_themes/harry%20potter/harry_potter.jpg')",
+    cardBg: "rgba(28,37,65,0.85)",
+    cardBorder: "#C9A24D",
+    primary: "#C9A24D",
+    primaryGlow: "#F2E6C9",
+    secondary: "#1C2541",
+    accent: "#6EC6FF",
+    text: "#F2E6C9",
+    textMuted: "#7A7F85",
+    inputBg: "#0B0D10",
+    success: "#1A472A",
+    error: "#7F0909"
+  },
+  {
+    name: "Kramel",
+    bgColor: "#1F2A44",
+    bgImage: "url('background_themes/kramel/kramel.avif')",
+    cardBg: "rgba(247,238,220,0.9)",
+    cardBorder: "#E07A2D",
+    primary: "#E07A2D",
+    primaryGlow: "#F4D6B0",
+    secondary: "#2F5D50",
+    accent: "#D4AF37",
+    text: "#1F2A44",
+    textMuted: "#7A1F2B",
+    inputBg: "#F7EEDC",
+    success: "#2F5D50",
+    error: "#7A1F2B"
+  },
+  {
+    name: "Toca Boca",
+    bgColor: "#FFF2D9",
+    bgImage: "url('background_themes/toca%20boca/tocal_boca.webp')",
+    cardBg: "rgba(91,192,255,0.85)",
+    cardBorder: "#FF6FAE",
+    primary: "#FF6FAE",
+    primaryGlow: "#FFD84D",
+    secondary: "#5BC0FF",
+    accent: "#B084FF",
+    text: "#2A2A2A",
+    textMuted: "#555555",
+    inputBg: "#FFFFFF",
+    success: "#7CFFB2",
+    error: "#FF4B4B"
   }
 ];
 
@@ -151,6 +216,7 @@ GAME_DATA.words.forEach(d => state.words[norm(d.word)] ||= { c:0, w:0 });
 state.score ||= 0;
 state.streak ||= 0;
 state.game ||= "gap";
+state.correctUntilTheme ||= CORRECT_FOR_THEME;
 save(state);
 
 let current = null;
@@ -175,6 +241,94 @@ function setAreaHTML(html){ document.getElementById("area").innerHTML = html || 
 function updateMeta(){
   document.getElementById("score").textContent = "נקודות: " + (state.score||0);
   document.getElementById("streak").textContent = "רצף: " + (state.streak||0);
+}
+
+function updateThemeCounter(){
+  const counter = document.getElementById("themeCounter");
+  if (!counter) return;
+  const left = state.correctUntilTheme || CORRECT_FOR_THEME;
+  if (left === 1) {
+    counter.textContent = "עוד תשובה נכונה אחת והפתעה מעניינת תופיע";
+  } else {
+    counter.textContent = `עוד ${left} תשובות נכונות והפתעה מעניינת תופיע`;
+  }
+}
+
+const CELEBRATION_GIFS = [
+  'background_themes/gifs/200.gif',
+  'background_themes/gifs/200w.gif',
+  'background_themes/gifs/3754015qw6uosnxu5.gif',
+  'background_themes/gifs/918e4a9a2f47418cba2f16f4ef7282be.gif',
+  'background_themes/gifs/f2ab1af79d72d94a114bc9fe5a891835.gif',
+  'background_themes/gifs/giphy.gif',
+  'background_themes/gifs/giphy (1).gif',
+  'background_themes/gifs/giphy (2).gif',
+  'background_themes/gifs/giphy (3).gif',
+  'background_themes/gifs/love-you.gif',
+  'background_themes/gifs/osmo-ion.gif',
+  'background_themes/gifs/panda-gemoy.gif',
+  'background_themes/gifs/salute-buzz-lightyear.gif',
+  'background_themes/gifs/sleepover-hooray.gif',
+  'background_themes/gifs/source.gif',
+  'background_themes/gifs/source (1).gif',
+  'background_themes/gifs/woody-woodpecker-twerk.gif'
+];
+
+// Surprise pool system - contains both theme indices and GIF paths
+function createSurprisePool(){
+  const pool = [];
+  // Add all theme indices
+  for(let i = 0; i < THEMES.length; i++){
+    pool.push({ type: 'theme', value: i });
+  }
+  // Add all GIFs
+  CELEBRATION_GIFS.forEach(gif => {
+    pool.push({ type: 'gif', value: gif });
+  });
+  // Shuffle the pool
+  return pool.sort(() => Math.random() - 0.5);
+}
+
+function triggerSurprise(){
+  // Initialize pool if empty or not exists
+  if(!state.surprisePool || state.surprisePool.length === 0){
+    state.surprisePool = createSurprisePool();
+  }
+
+  // Pick and remove from pool
+  const surprise = state.surprisePool.pop();
+  save(state);
+
+  if(surprise.type === 'theme'){
+    currentThemeIndex = surprise.value;
+    applyTheme(currentThemeIndex);
+    return 'theme';
+  } else {
+    showCelebrationGif(surprise.value);
+    return 'gif';
+  }
+}
+
+function showCelebrationGif(gifPath){
+  const popup = document.getElementById('gifPopup');
+  const img = document.getElementById('gifImage');
+  if (!popup || !img) return;
+
+  // Add cache-busting parameter to force reload
+  img.src = gifPath + '?t=' + Date.now();
+
+  // Show popup
+  popup.classList.remove('hidden', 'hide');
+  popup.classList.add('show');
+
+  // Hide after 2.5 seconds
+  setTimeout(() => {
+    popup.classList.remove('show');
+    popup.classList.add('hide');
+    setTimeout(() => {
+      popup.classList.add('hidden');
+    }, 300);
+  }, 2500);
 }
 
 function updateWordsTable(){
@@ -235,41 +389,69 @@ function onCorrect(wordKey){
   // Find the original word (with correct casing)
   const originalWord = GAME_DATA.words.find(w => norm(w.word) === wordKey)?.word || wordKey;
 
+  // Surprise counter - decrement on every correct answer
+  state.correctUntilTheme = (state.correctUntilTheme || CORRECT_FOR_THEME) - 1;
+  let surpriseTriggered = false;
+  if(state.correctUntilTheme <= 0){
+    triggerSurprise();
+    state.correctUntilTheme = CORRECT_FOR_THEME;
+    surpriseTriggered = true;
+  }
+
+  // Word learned - also trigger surprise
   if(nowLearned && !wasLearned){
+    if(!surpriseTriggered){
+      triggerSurprise();
+    }
     setFeedback(`מצוין! המילה "${originalWord}" נלמדה! 🎉`);
-    nextTheme(); // Change theme when word is learned
   } else if(!nowLearned){
-    setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה "${originalWord}" נלמדת.`);
+    if(surpriseTriggered){
+      setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה "${originalWord}" נלמדת. 🎉`);
+    } else {
+      setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה "${originalWord}" נלמדת.`);
+    }
   } else {
-    setFeedback("מצוין!");
+    if(surpriseTriggered){
+      setFeedback("מצוין! 🎉");
+    } else {
+      setFeedback("מצוין!");
+    }
   }
 
   save(state);
   updateMeta();
   updateWordsTable();
+  updateThemeCounter();
 }
 
 function onWrong(wordKey){
   state.words[wordKey].w++;
   state.streak = 0;
 
+  // Reset theme counter on wrong answer
+  state.correctUntilTheme = CORRECT_FOR_THEME;
+
+  // Find the original word (with correct casing)
+  const originalWord = GAME_DATA.words.find(w => norm(w.word) === wordKey)?.word || wordKey;
+
   // Check if we need to deduct a correct point
   if(state.words[wordKey].w >= WRONG_PENALTY_THRESHOLD){
     if(state.words[wordKey].c > 0){
       state.words[wordKey].c--;
-      setFeedback("לא נורא. 5 טעויות = -1 נקודת למידה. ננסה שוב!");
+      setFeedback(`לא נורא. 2 טעויות = -1 נקודת למידה למילה "${originalWord}". ננסה שוב!`);
     } else {
       setFeedback("לא נורא, ננסה שוב בהמשך.");
     }
     state.words[wordKey].w = 0; // Reset wrong counter
   } else {
     const wrongsLeft = WRONG_PENALTY_THRESHOLD - state.words[wordKey].w;
-    setFeedback(`לא נורא. עוד ${wrongsLeft} טעויות ותאבד נקודת למידה.`);
+    setFeedback(`לא נורא. עוד ${wrongsLeft} טעויות ותאבד נקודת למידה למילה "${originalWord}".`);
   }
 
   save(state);
   updateMeta();
   updateWordsTable();
+  updateThemeCounter();
 }
 
 // Get unlearned words only
@@ -534,18 +716,34 @@ function renderMemory(){
           state.words[wordKey].w = 0;
           const nowLearned = isLearned(wordKey);
 
-          if(nowLearned && !wasLearned){
-            setFeedback("מצוין! המילה נלמדה! 🎉");
-          } else {
-            setFeedback("מצוין! זוג נכון.");
+          // Surprise counter - decrement on every correct match
+          state.correctUntilTheme = (state.correctUntilTheme || CORRECT_FOR_THEME) - 1;
+          let surpriseTriggered = false;
+          if(state.correctUntilTheme <= 0){
+            triggerSurprise();
+            state.correctUntilTheme = CORRECT_FOR_THEME;
+            surpriseTriggered = true;
           }
 
-          save(state); updateMeta(); updateWordsTable();
+          // Word learned - also trigger surprise
+          if(nowLearned && !wasLearned){
+            if(!surpriseTriggered){
+              triggerSurprise();
+            }
+            setFeedback("מצוין! המילה נלמדה! 🎉");
+          } else {
+            if(surpriseTriggered){
+              setFeedback("מצוין! זוג נכון. 🎉");
+            } else {
+              setFeedback("מצוין! זוג נכון.");
+            }
+          }
+
+          save(state); updateMeta(); updateWordsTable(); updateThemeCounter();
           memory.open=[];
 
           if(memory.matched.size===memory.deck.length){
             setFeedback("כל הכבוד! סיימתם סבב! 🎉");
-            nextTheme(); // Change theme when memory game completed
             setTimeout(()=>{
               newMemoryGame();
               renderMemory();
@@ -555,8 +753,9 @@ function renderMemory(){
           }
         } else {
           state.streak=0;
+          state.correctUntilTheme = CORRECT_FOR_THEME; // Reset theme counter on wrong
           setFeedback("לא מתאים. נסו שוב.");
-          save(state); updateMeta();
+          save(state); updateMeta(); updateThemeCounter();
           setTimeout(()=>{ memory.open=[]; renderMemory(); },650);
         }
       }
@@ -566,7 +765,7 @@ function renderMemory(){
 }
 
 function render(){
-  updateMeta(); updateWordsTable();
+  updateMeta(); updateWordsTable(); updateThemeCounter();
   const g=document.getElementById("gameSelect").value;
   state.game=g; save(state);
   document.getElementById("instructions").textContent=instructionsFor(g);
@@ -591,7 +790,7 @@ document.getElementById("resetBtn").onclick=()=>{
   const ok=window.confirm("איפוס ימחק את כל ההתקדמות במכשיר הזה (נקודות, רצף והיסטוריית תשובות). בטוחים שתרצו לאפס?");
   if(!ok) return;
   localStorage.removeItem(STORE_KEY);
-  state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}};
+  state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
   memory={deck:[], open:[], matched:new Set()};
   currentThemeIndex = 0;

@@ -1,0 +1,101 @@
+Core Palette (Brand Feel)
+
+Bubblegum Pink
+
+#FF6FAE
+
+Sunny Yellow
+
+#FFD84D
+
+Sky Blue
+
+#5BC0FF
+
+Mint Green
+
+#7CFFB2
+
+Lavender Purple
+
+#B084FF
+
+Soft Orange
+
+#FF9F4A
+
+Pure White
+
+#FFFFFF
+
+Charcoal (Soft Black)
+
+#2A2A2A
+
+Background & Environment Colors
+
+Cream
+
+#FFF2D9
+
+Pastel Peach
+
+#FFD3C1
+
+Light Aqua
+
+#BEEFFF
+
+Soft Grass Green
+
+#A6F4A1
+
+UI & Interaction Accents
+
+Coral Red
+
+#FF4B4B
+
+Alerts, buttons, emphasis
+
+Gold
+
+#FFD166
+
+Rewards, highlights
+
+Design Rules (Very Important for Toca Style)
+
+Flat colors or very soft gradients only
+
+No harsh blacks (use charcoal instead)
+
+High brightness, low seriousness
+
+Inclusive, non-gendered color balance
+
+Rounded shapes + friendly contrast
+
+Quick “Toca Boca” Starter Palette
+Pink     #FF6FAE
+Yellow   #FFD84D
+Blue     #5BC0FF
+Mint     #7CFFB2
+Purple   #B084FF
+Orange   #FF9F4A
+White    #FFFFFF
+Charcoal #2A2A2A
+
+Want This Customized?
+
+I can:
+
+Convert this to Roblox Color3 values
+
+Create kid-safe UI palettes
+
+Adapt it for characters vs environments
+
+Build a Toca-style theme for a game or app
+
+Just tell me what you’re designing.

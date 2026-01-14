@@ -1,0 +1,101 @@
+The Back to the Future color palette is bold, cinematic, and distinctly 1980s, combining neon accents, warm Americana tones, and cool sci-fi blues. It balances everyday suburbia with futuristic energy.
+
+Below is a film-accurate, design-ready palette inspired by the trilogy’s posters, DeLorean scenes, and title graphics.
+
+Core Palette (Iconic)
+
+Flame Orange / Title Gradient Base
+
+#FF6A00
+
+Energy, motion, time travel
+
+Electric Yellow
+
+#FFD23F
+
+Speed lines, highlights, sparks
+
+Deep Black
+
+#0A0A0A
+
+Space, night, contrast
+
+Steel Gray
+
+#8A8F98
+
+DeLorean body, machinery
+
+Sci-Fi & Time-Travel Accents
+
+Neon Cyan
+
+#00E5FF
+
+Flux capacitor glow, electricity
+
+Electric Blue
+
+#1F5FFF
+
+Time circuits, digital readouts
+
+Plasma White
+
+#F5F7FA
+
+Lightning flashes, energy bursts
+
+1950s / Suburbia Tones
+
+Retro Red
+
+#C41E3A
+
+Cars, signage, clothing
+
+Teal Green
+
+#2FB7A1
+
+Diners, interiors, signage
+
+Cream Beige
+
+#F3E6C8
+
+Buildings, paper, warm interiors
+
+Design Rules (To Feel Authentically BTTF)
+
+High contrast between warm flames and cool blues
+
+Use motion cues (diagonals, streaks, gradients)
+
+Neon accents should feel electric, not soft
+
+Balance 80s optimism with sci-fi sharpness
+
+Quick “Back to the Future” Starter Palette
+Flame Orange   #FF6A00
+Electric Yellow#FFD23F
+Neon Cyan      #00E5FF
+Electric Blue  #1F5FFF
+Steel Gray     #8A8F98
+Deep Black     #0A0A0A
+Cream Beige    #F3E6C8
+
+
+If you want, I can:
+
+Create a poster-accurate gradient set
+
+Adapt this for UI, slides, or thumbnails
+
+Tune it toward Part II (future) or Part III (western)
+
+Convert it to print-ready CMYK
+
+Tell me how you plan to use it and I’ll tailor it precisely.
