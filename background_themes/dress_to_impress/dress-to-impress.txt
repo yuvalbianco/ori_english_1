@@ -1,0 +1,118 @@
+Core Palette (UI & Environment)
+
+Soft White
+
+#F7F7F7
+
+UI backgrounds, menus, clean space
+
+Light Cool Gray
+
+#DADADA
+
+Panels, borders, runway floor
+
+Charcoal
+
+#2B2B2B
+
+Text, outlines, contrast elements
+
+Fashion Pastels (Very Important)
+
+Baby Pink
+
+#FFB6C9
+
+Lavender
+
+#C9B7E2
+
+Powder Blue
+
+#B8D8F8
+
+Mint
+
+#BFF0D4
+
+Used heavily for:
+
+Lobby decor
+
+Clothing bases
+
+Accessories
+
+Lighting accents
+
+Glam / Statement Accents
+
+Hot Pink
+
+#FF4FA3
+
+Runway highlights, “wow” outfits
+
+Gold
+
+#E6C15A
+
+Jewelry, premium items, shine
+
+Red
+
+#E53935
+
+Bold outfits, drama looks
+
+Skin & Neutral Fashion Tones
+
+Light Beige
+
+#F2D6C9
+
+Warm Tan
+
+#D2A679
+
+Deep Brown
+
+#8B5A3C
+
+(Used for inclusive avatar tones and neutral fashion pieces.)
+
+Design Rules (Key to the Dress to Impress Look)
+
+High brightness
+
+Clean, glossy feel
+
+Pastels + bold accents (never muddy)
+
+Minimal texture – mostly flat or soft gradients
+
+Strong contrast on runway
+
+Quick “Dress to Impress” Starter Palette
+White        #F7F7F7
+Baby Pink    #FFB6C9
+Lavender     #C9B7E2
+Powder Blue  #B8D8F8
+Hot Pink     #FF4FA3
+Gold         #E6C15A
+Charcoal     #2B2B2B
+
+Want This Adapted?
+
+I can:
+
+Convert this to Roblox Color3 values
+
+Create theme-based palettes (Y2K, Goth, Barbiecore, Clean Girl, Fairy, etc.)
+
+Tune it specifically for runway lighting vs UI
+
+Help you design a Dress to Impress–style UI or outfit system
+
+Just tell me how you want to use it.
