@@ -234,9 +234,21 @@ function remainingToMaster(key){
 }
 
 function setPill(t){ document.getElementById("pill").textContent = t; }
-function setFeedback(t){ document.getElementById("feedback").textContent = t || ""; }
+function setFeedback(t){ document.getElementById("feedback").innerHTML = t || ""; }
 function setPrompt(t){ document.getElementById("prompt").textContent = t || ""; }
 function setAreaHTML(html){ document.getElementById("area").innerHTML = html || ""; }
+
+function showSentenceFeedback(wordHe, sentenceEn, sentenceHe){
+  const feedback = document.getElementById("feedback");
+  if(!feedback) return;
+  const current = feedback.innerHTML;
+  const sentenceInfo = `<div class="sentence-feedback">
+    <div>המילה <strong>"${wordHe}"</strong> נבחרה בצורה נכונה.</div>
+    <div>המשפט המלא: <span dir="ltr">${sentenceEn}</span></div>
+    <div>בעברית: ${sentenceHe}</div>
+  </div>`;
+  feedback.innerHTML = current + sentenceInfo;
+}
 
 function updateMeta(){
   document.getElementById("score").textContent = "נקודות: " + (state.score||0);
@@ -511,6 +523,9 @@ function answerGap(choice, btn){
     setPill("נכון");
     btn.classList.add("good");
     onCorrect(key);
+    // Show sentence feedback
+    const fullSentence = q.question.replace("____", q.answer);
+    showSentenceFeedback(q.hint_he, fullSentence, q.question_he);
   } else {
     setPill("לא נכון");
     btn.classList.add("bad");
@@ -560,16 +575,21 @@ function renderTwo(){
 function answerTwo(isCorrect, btn){
   if(answered) return;
   answered=true;
-  const key = norm(current.item.word);
+  const item = current.item;
+  const key = norm(item.word);
   if(isCorrect){
     setPill("נכון");
     btn.classList.add("good");
     onCorrect(key);
+    // Show sentence feedback - look up hint_he from words array
+    const wordData = GAME_DATA.words.find(w => norm(w.word) === key);
+    const hintHe = wordData ? wordData.hint_he : item.word;
+    showSentenceFeedback(hintHe, item.correct, item.correct_he);
   } else {
     setPill("לא נכון");
     btn.classList.add("bad");
     [...document.querySelectorAll("#twoChoices .choice")].forEach(b=>{
-      if(b.textContent === current.item.correct) b.classList.add("good");
+      if(b.textContent === item.correct) b.classList.add("good");
     });
     onWrong(key);
   }
@@ -639,16 +659,21 @@ function renderBuilder(){
 function answerBuilder(){
   if(answered) return;
   answered=true;
+  const item = current.item;
   const built=current.built.join(" ");
-  const target=current.item.tokens.join(" ");
-  const key=norm(current.item.word);
+  const target=item.tokens.join(" ");
+  const key=norm(item.word);
   if(built===target){
     setPill("נכון");
     onCorrect(key);
+    // Show sentence feedback - look up hint_he from words array
+    const wordData = GAME_DATA.words.find(w => norm(w.word) === key);
+    const hintHe = wordData ? wordData.hint_he : item.word;
+    showSentenceFeedback(hintHe, item.sentence, item.sentence_he);
   } else {
     setPill("לא נכון");
     onWrong(key);
-    setFeedback("לא נורא. המשפט הנכון הוא: " + current.item.sentence);
+    setFeedback("לא נורא. המשפט הנכון הוא: " + item.sentence);
   }
 }
 
@@ -663,8 +688,8 @@ function newMemoryGame(){
   const sample = [...unlearned].sort(()=>0.5-Math.random()).slice(0, sampleSize);
   const deck=[];
   sample.forEach(p=>{
-    deck.push({type:"word", id:p.id, text:p.word, wordKey: norm(p.word)});
-    deck.push({type:"sentence", id:p.id, text:p.sentence, wordKey: norm(p.word)});
+    deck.push({type:"word", id:p.id, text:p.word, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: p.hint_he});
+    deck.push({type:"sentence", id:p.id, text:p.sentence, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: p.hint_he});
   });
   deck.sort(()=>0.5-Math.random());
   memory.deck=deck; memory.open=[]; memory.matched=new Set();
@@ -738,6 +763,8 @@ function renderMemory(){
               setFeedback("מצוין! זוג נכון.");
             }
           }
+          // Show sentence feedback
+          showSentenceFeedback(ca.hint_he, ca.sentence, ca.sentence_he);
 
           save(state); updateMeta(); updateWordsTable(); updateThemeCounter();
           memory.open=[];
