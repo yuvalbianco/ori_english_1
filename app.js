@@ -6,38 +6,38 @@ const CORRECT_FOR_THEME = 10;
 
 // ========== SOUND FX SYSTEM ==========
 const SUCCESS_SOUNDS = [
-  'background_themes/sound_fx/success/15105 male group joy win shout.wav',
-  'background_themes/sound_fx/success/32500 Cartoon group shout hooray-full.wav',
-  'background_themes/sound_fx/success/Approve Glow Celebratory.wav',
-  'background_themes/sound_fx/success/Award Happy.wav',
-  'background_themes/sound_fx/success/Cartoon Cute Celebration Hee Hee Hee.wav',
-  'background_themes/sound_fx/success/Celebration Woohoo.wav',
-  'background_themes/sound_fx/success/Character Celebrates.wav',
-  'background_themes/sound_fx/success/Character Happy Yeahs.wav',
-  'background_themes/sound_fx/success/Female Celebrating Woohoo.wav',
-  'background_themes/sound_fx/success/Happy Win Game.wav',
-  'background_themes/sound_fx/success/Man Celebratory Yes.wav',
-  'background_themes/sound_fx/success/Positive Celebration.wav',
+  'background_themes/sound_fx/success/15105%20male%20group%20joy%20win%20shout.wav',
+  'background_themes/sound_fx/success/32500%20Cartoon%20group%20shout%20hooray-full.wav',
+  'background_themes/sound_fx/success/Approve%20Glow%20Celebratory.wav',
+  'background_themes/sound_fx/success/Award%20Happy.wav',
+  'background_themes/sound_fx/success/Cartoon%20Cute%20Celebration%20Hee%20Hee%20Hee.wav',
+  'background_themes/sound_fx/success/Celebration%20Woohoo.wav',
+  'background_themes/sound_fx/success/Character%20Celebrates.wav',
+  'background_themes/sound_fx/success/Character%20Happy%20Yeahs.wav',
+  'background_themes/sound_fx/success/Female%20Celebrating%20Woohoo.wav',
+  'background_themes/sound_fx/success/Happy%20Win%20Game.wav',
+  'background_themes/sound_fx/success/Man%20Celebratory%20Yes.wav',
+  'background_themes/sound_fx/success/Positive%20Celebration.wav',
   'background_themes/sound_fx/success/wow-423653.mp3'
 ];
 
 const FAIL_SOUNDS = [
-  'background_themes/sound_fx/failed/Access Fail.wav',
-  'background_themes/sound_fx/failed/App Fail.wav',
-  'background_themes/sound_fx/failed/Cartoon Failure.wav',
-  'background_themes/sound_fx/failed/Descending Game Failure.wav',
-  'background_themes/sound_fx/failed/Fail 05.wav',
-  'background_themes/sound_fx/failed/Game Fail.wav',
-  'background_themes/sound_fx/failed/Musical Fail.wav',
-  'background_themes/sound_fx/failed/Platform Fail.wav',
-  'background_themes/sound_fx/failed/Player Fail.wav',
-  'background_themes/sound_fx/failed/Unfortunate Fail.wav'
+  'background_themes/sound_fx/failed/Access%20Fail.wav',
+  'background_themes/sound_fx/failed/App%20Fail.wav',
+  'background_themes/sound_fx/failed/Cartoon%20Failure.wav',
+  'background_themes/sound_fx/failed/Descending%20Game%20Failure.wav',
+  'background_themes/sound_fx/failed/Fail%2005.wav',
+  'background_themes/sound_fx/failed/Game%20Fail.wav',
+  'background_themes/sound_fx/failed/Musical%20Fail.wav',
+  'background_themes/sound_fx/failed/Platform%20Fail.wav',
+  'background_themes/sound_fx/failed/Player%20Fail.wav',
+  'background_themes/sound_fx/failed/Unfortunate%20Fail.wav'
 ];
 
 const WINNING_SOUNDS = [
-  'background_themes/sound_fx/winning/Congratulations Youre A Winner.wav',
+  'background_themes/sound_fx/winning/Congratulations%20Youre%20A%20Winner.wav',
   'background_themes/sound_fx/winning/Victory.wav',
-  'background_themes/sound_fx/winning/Winner Announcement.wav',
+  'background_themes/sound_fx/winning/Winner%20Announcement.wav',
   'background_themes/sound_fx/winning/Winning.wav',
   'background_themes/sound_fx/winning/Winning_2.wav'
 ];
