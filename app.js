@@ -982,8 +982,9 @@ document.getElementById("resetBtn").onclick=()=>{
   state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
   memory={deck:[], open:[], matched:new Set()};
-  currentThemeIndex = 0;
-  applyTheme(0);
+  // Select a random theme on reset
+  currentThemeIndex = Math.floor(Math.random() * THEMES.length);
+  applyTheme(currentThemeIndex);
   save(state);
   render();
 };
@@ -996,8 +997,9 @@ document.getElementById("playAgainBtn").onclick = () => {
   state = {score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d => state.words[norm(d.word)] = {c:0, w:0});
   memory = {deck:[], open:[], matched:new Set(), waitingForClick: false};
-  currentThemeIndex = 0;
-  applyTheme(0);
+  // Select a random theme on play again
+  currentThemeIndex = Math.floor(Math.random() * THEMES.length);
+  applyTheme(currentThemeIndex);
   save(state);
   render();
 };
