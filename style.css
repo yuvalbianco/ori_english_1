@@ -413,6 +413,28 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
   color:var(--primary);
 }
 
+/* Clickable feedback for memory game */
+.feedback.clickable{
+  cursor:pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.feedback.clickable:hover{
+  transform:scale(1.01);
+}
+.click-to-continue{
+  margin-top:12px;
+  padding:10px;
+  background:var(--primary);
+  color:white;
+  border-radius:8px;
+  text-align:center;
+  font-weight:600;
+  cursor:pointer;
+}
+.click-to-continue:hover{
+  box-shadow:0 0 15px var(--primary-glow);
+}
+
 /* GIF popup celebration */
 .gif-popup{
   position:fixed;
