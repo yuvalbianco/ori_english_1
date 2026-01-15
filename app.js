@@ -4,6 +4,81 @@ const MASTERED_CORRECT = 3;
 const WRONG_PENALTY_THRESHOLD = 2;
 const CORRECT_FOR_THEME = 10;
 
+// ========== SOUND FX SYSTEM ==========
+const SUCCESS_SOUNDS = [
+  'background_themes/sound_fx/success/15105 male group joy win shout.wav',
+  'background_themes/sound_fx/success/32500 Cartoon group shout hooray-full.wav',
+  'background_themes/sound_fx/success/Approve Glow Celebratory.wav',
+  'background_themes/sound_fx/success/Award Happy.wav',
+  'background_themes/sound_fx/success/Cartoon Cute Celebration Hee Hee Hee.wav',
+  'background_themes/sound_fx/success/Celebration Woohoo.wav',
+  'background_themes/sound_fx/success/Character Celebrates.wav',
+  'background_themes/sound_fx/success/Character Happy Yeahs.wav',
+  'background_themes/sound_fx/success/Female Celebrating Woohoo.wav',
+  'background_themes/sound_fx/success/Happy Win Game.wav',
+  'background_themes/sound_fx/success/Man Celebratory Yes.wav',
+  'background_themes/sound_fx/success/Positive Celebration.wav',
+  'background_themes/sound_fx/success/wow-423653.mp3'
+];
+
+const FAIL_SOUNDS = [
+  'background_themes/sound_fx/failed/Access Fail.wav',
+  'background_themes/sound_fx/failed/App Fail.wav',
+  'background_themes/sound_fx/failed/Cartoon Failure.wav',
+  'background_themes/sound_fx/failed/Descending Game Failure.wav',
+  'background_themes/sound_fx/failed/Fail 05.wav',
+  'background_themes/sound_fx/failed/Game Fail.wav',
+  'background_themes/sound_fx/failed/Musical Fail.wav',
+  'background_themes/sound_fx/failed/Platform Fail.wav',
+  'background_themes/sound_fx/failed/Player Fail.wav',
+  'background_themes/sound_fx/failed/Unfortunate Fail.wav'
+];
+
+const WINNING_SOUNDS = [
+  'background_themes/sound_fx/winning/Congratulations Youre A Winner.wav',
+  'background_themes/sound_fx/winning/Victory.wav',
+  'background_themes/sound_fx/winning/Winner Announcement.wav',
+  'background_themes/sound_fx/winning/Winning.wav',
+  'background_themes/sound_fx/winning/Winning_2.wav'
+];
+
+let currentAudio = null;
+
+// Sound pool system - non-repeating sounds until all played
+let soundPools = {
+  success: [],
+  fail: [],
+  winning: []
+};
+
+function createSoundPool(soundArray) {
+  return [...soundArray].sort(() => Math.random() - 0.5);
+}
+
+function playSoundFromPool(poolKey, soundArray) {
+  // Stop any currently playing sound
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio = null;
+  }
+
+  // Refill pool if empty
+  if (!soundPools[poolKey] || soundPools[poolKey].length === 0) {
+    soundPools[poolKey] = createSoundPool(soundArray);
+  }
+
+  // Pick and remove from pool
+  const sound = soundPools[poolKey].pop();
+
+  currentAudio = new Audio(sound);
+  currentAudio.volume = 0.5;
+  currentAudio.play().catch(e => console.log('Audio play failed:', e));
+}
+
+function playSuccessSound() { playSoundFromPool('success', SUCCESS_SOUNDS); }
+function playFailSound() { playSoundFromPool('fail', FAIL_SOUNDS); }
+function playWinningSound() { playSoundFromPool('winning', WINNING_SOUNDS); }
+
 // ========== THEME SYSTEM ==========
 const THEMES = [
   {
@@ -343,6 +418,66 @@ function showCelebrationGif(gifPath){
   }, 2500);
 }
 
+// Check if all words are learned
+function allWordsLearned() {
+  return GAME_DATA.words.every(d => {
+    const key = norm(d.word);
+    return isLearned(key);
+  });
+}
+
+// Show winning screen when all words are learned
+function showWinningScreen() {
+  playWinningSound();
+  const screen = document.getElementById('winningScreen');
+  if (!screen) return;
+
+  screen.classList.remove('hidden');
+  screen.classList.add('show');
+
+  // Add confetti animation
+  createConfetti();
+}
+
+function hideWinningScreen() {
+  const screen = document.getElementById('winningScreen');
+  if (!screen) return;
+  screen.classList.remove('show');
+  screen.classList.add('hidden');
+}
+
+// Simple confetti effect
+function createConfetti() {
+  const screen = document.getElementById('winningScreen');
+  if (!screen) return;
+
+  const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'];
+
+  for (let i = 0; i < 100; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.animationDelay = Math.random() * 3 + 's';
+    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    screen.appendChild(confetti);
+
+    // Remove confetti after animation
+    setTimeout(() => confetti.remove(), 5000);
+  }
+}
+
+// Check for game completion after word is learned
+function checkGameCompletion() {
+  if (allWordsLearned()) {
+    setTimeout(() => {
+      showWinningScreen();
+    }, 1500);
+    return true;
+  }
+  return false;
+}
+
 function updateWordsTable(){
   const container = document.getElementById("wordsTableContainer");
   if (!container) return;
@@ -389,6 +524,7 @@ function setGame(game){
 }
 
 function onCorrect(wordKey){
+  playSuccessSound();
   const wasLearned = isLearned(wordKey);
   state.words[wordKey].c++;
   state.words[wordKey].w = 0; // Reset wrong counter on correct
@@ -416,6 +552,8 @@ function onCorrect(wordKey){
       triggerSurprise();
     }
     setFeedback(`מצוין! המילה "${originalWord}" נלמדה! 🎉`);
+    // Check if all words are learned
+    checkGameCompletion();
   } else if(!nowLearned){
     if(surpriseTriggered){
       setFeedback(`מצוין! עוד ${left} תשובות נכונות והמילה "${originalWord}" נלמדת. 🎉`);
@@ -437,6 +575,7 @@ function onCorrect(wordKey){
 }
 
 function onWrong(wordKey){
+  playFailSound();
   state.words[wordKey].w++;
   state.streak = 0;
 
@@ -747,6 +886,7 @@ function renderMemory(){
         const [a,b]=memory.open;
         const ca=memory.deck[a], cb=memory.deck[b];
         if(ca.id===cb.id && ca.type!==cb.type){
+          playSuccessSound();
           memory.matched.add(a); memory.matched.add(b);
           state.score=(state.score||0)+15;
           state.streak=(state.streak||0)+1;
@@ -760,6 +900,8 @@ function renderMemory(){
           // Show feedback for correct match
           if(nowLearned && !wasLearned){
             setFeedback("מצוין! המילה נלמדה! 🎉");
+            // Check if all words are learned
+            checkGameCompletion();
           } else {
             setFeedback("מצוין! זוג נכון.");
           }
@@ -799,6 +941,7 @@ function renderMemory(){
             document.addEventListener("keydown", handleEnter);
           }
         } else {
+          playFailSound();
           state.streak=0;
           setFeedback("לא מתאים. נסו שוב.");
           save(state); updateMeta();
@@ -839,6 +982,20 @@ document.getElementById("resetBtn").onclick=()=>{
   state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
   memory={deck:[], open:[], matched:new Set()};
+  currentThemeIndex = 0;
+  applyTheme(0);
+  save(state);
+  render();
+};
+
+// Play again button handler
+document.getElementById("playAgainBtn").onclick = () => {
+  hideWinningScreen();
+  // Reset all progress
+  localStorage.removeItem(STORE_KEY);
+  state = {score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
+  GAME_DATA.words.forEach(d => state.words[norm(d.word)] = {c:0, w:0});
+  memory = {deck:[], open:[], matched:new Set(), waitingForClick: false};
   currentThemeIndex = 0;
   applyTheme(0);
   save(state);
