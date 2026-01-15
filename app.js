@@ -221,7 +221,7 @@ save(state);
 
 let current = null;
 let answered = false;
-let memory = { deck: [], open: [], matched: new Set() };
+let memory = { deck: [], open: [], matched: new Set(), waitingForClick: false };
 
 function isLearned(key){
   const p = state.words[key];
@@ -491,6 +491,9 @@ function pickGap(){
 
 function renderGap(){
   answered=false;
+  // Show theme counter in this game
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
   const q = pickGap();
   if(!q){
     setPill("כל הכבוד!");
@@ -544,6 +547,9 @@ function pickTwo(){
 
 function renderTwo(){
   answered=false;
+  // Show theme counter in this game
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
   const item = pickTwo();
   if(!item){
     setPill("כל הכבוד!");
@@ -603,6 +609,9 @@ function pickBuilder(){
 
 function renderBuilder(){
   answered=false;
+  // Show theme counter in this game
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
   const item = pickBuilder();
   if(!item){
     setPill("כל הכבוד!");
@@ -688,11 +697,14 @@ function newMemoryGame(){
   const sample = [...unlearned].sort(()=>0.5-Math.random()).slice(0, sampleSize);
   const deck=[];
   sample.forEach(p=>{
-    deck.push({type:"word", id:p.id, text:p.word, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: p.hint_he});
-    deck.push({type:"sentence", id:p.id, text:p.sentence, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: p.hint_he});
+    // Look up hint_he from words array
+    const wordData = GAME_DATA.words.find(w => norm(w.word) === norm(p.word));
+    const hintHe = wordData ? wordData.hint_he : p.word;
+    deck.push({type:"word", id:p.id, text:p.word, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: hintHe});
+    deck.push({type:"sentence", id:p.id, text:p.sentence, wordKey: norm(p.word), sentence: p.sentence, sentence_he: p.sentence_he, hint_he: hintHe});
   });
   deck.sort(()=>0.5-Math.random());
-  memory.deck=deck; memory.open=[]; memory.matched=new Set();
+  memory.deck=deck; memory.open=[]; memory.matched=new Set(); memory.waitingForClick=false;
 }
 
 function renderMemory(){
@@ -701,6 +713,9 @@ function renderMemory(){
   setPill("זיכרון");
   setPrompt("מצאו זוג מתאים: מילה ↔ משפט");
   setFeedback("");
+  // Hide theme counter in memory game (surprise only on puzzle completion)
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "none";
 
   if(!memory.deck.length) newMemoryGame();
 
@@ -722,6 +737,7 @@ function renderMemory(){
     div.className="memCard"+(isOpen?" open":"")+(isMatched?" matched":"");
     div.textContent=(isOpen||isMatched)?card.text:"?";
     div.onclick=()=>{
+      if(memory.waitingForClick) return;
       if(isMatched) return;
       if(memory.open.includes(idx)) return;
       if(memory.open.length===2) return;
@@ -741,48 +757,51 @@ function renderMemory(){
           state.words[wordKey].w = 0;
           const nowLearned = isLearned(wordKey);
 
-          // Surprise counter - decrement on every correct match
-          state.correctUntilTheme = (state.correctUntilTheme || CORRECT_FOR_THEME) - 1;
-          let surpriseTriggered = false;
-          if(state.correctUntilTheme <= 0){
-            triggerSurprise();
-            state.correctUntilTheme = CORRECT_FOR_THEME;
-            surpriseTriggered = true;
-          }
-
-          // Word learned - also trigger surprise
+          // Show feedback for correct match
           if(nowLearned && !wasLearned){
-            if(!surpriseTriggered){
-              triggerSurprise();
-            }
             setFeedback("מצוין! המילה נלמדה! 🎉");
           } else {
-            if(surpriseTriggered){
-              setFeedback("מצוין! זוג נכון. 🎉");
-            } else {
-              setFeedback("מצוין! זוג נכון.");
-            }
+            setFeedback("מצוין! זוג נכון.");
           }
           // Show sentence feedback
           showSentenceFeedback(ca.hint_he, ca.sentence, ca.sentence_he);
 
+          // Add click instruction and make feedback clickable
+          const feedbackEl = document.getElementById("feedback");
+          feedbackEl.innerHTML += '<div class="click-to-continue">לחץ כאן או Enter להמשיך</div>';
+          feedbackEl.classList.add("clickable");
+
           save(state); updateMeta(); updateWordsTable(); updateThemeCounter();
           memory.open=[];
 
+          // Check if puzzle is complete - only then trigger surprise
           if(memory.matched.size===memory.deck.length){
+            triggerSurprise();
             setFeedback("כל הכבוד! סיימתם סבב! 🎉");
             setTimeout(()=>{
               newMemoryGame();
               renderMemory();
             }, 1500);
           } else {
-            setTimeout(()=>renderMemory(),450);
+            // Wait for user to click feedback or press Enter to continue
+            memory.waitingForClick = true;
+            const continueGame = () => {
+              feedbackEl.onclick = null;
+              feedbackEl.classList.remove("clickable");
+              document.removeEventListener("keydown", handleEnter);
+              memory.waitingForClick = false;
+              renderMemory();
+            };
+            const handleEnter = (e) => {
+              if(e.key === "Enter") continueGame();
+            };
+            feedbackEl.onclick = continueGame;
+            document.addEventListener("keydown", handleEnter);
           }
         } else {
           state.streak=0;
-          state.correctUntilTheme = CORRECT_FOR_THEME; // Reset theme counter on wrong
           setFeedback("לא מתאים. נסו שוב.");
-          save(state); updateMeta(); updateThemeCounter();
+          save(state); updateMeta();
           setTimeout(()=>{ memory.open=[]; renderMemory(); },650);
         }
       }
