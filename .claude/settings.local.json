@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(claude whoami:*)"
+      "Bash(claude whoami:*)",
+      "Bash(git mv:*)"
     ]
   }
 }
