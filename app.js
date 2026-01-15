@@ -85,6 +85,7 @@ const THEMES = [
     name: "Stranger Things",
     bgColor: "#0B0B0B",
     bgImage: "url('background_themes/stranger_things/stranger%20things%20wallpaper1.jpg')",
+    bgImageiPad: "url('background_themes/stranger_things/stranger_things_ipad.png')",
     cardBg: "rgba(11,11,11,0.85)",
     cardBorder: "#6A040F",
     primary: "#B1060F",
@@ -101,6 +102,7 @@ const THEMES = [
     name: "Simpsons",
     bgColor: "#70D1FE",
     bgImage: "url('background_themes/simpsons/simpsons.jpg')",
+    bgImageiPad: "url('background_themes/simpsons/simpsons_ipad.png')",
     cardBg: "rgba(255,217,15,0.9)",
     cardBorder: "#000000",
     primary: "#FFD90F",
@@ -117,6 +119,7 @@ const THEMES = [
     name: "Powerpuff Girls",
     bgColor: "#FFB6C9",
     bgImage: "url('background_themes/power_puff_girls/power_puff_girls.jpg')",
+    bgImageiPad: "url('background_themes/power_puff_girls/power_puff_ipad.png')",
     cardBg: "rgba(255,102,178,0.85)",
     cardBorder: "#000000",
     primary: "#FF66B2",
@@ -133,6 +136,7 @@ const THEMES = [
     name: "99 Nights Forest",
     bgColor: "#1E252B",
     bgImage: "url('background_themes/ninety_nine_nights_in_the_forest/ninety_nine_forest.webp')",
+    bgImageiPad: "url('background_themes/ninety_nine_nights_in_the_forest/ninety_nine_ipad.png')",
     cardBg: "rgba(47,62,43,0.85)",
     cardBorder: "#4F6B3A",
     primary: "#4F6B3A",
@@ -149,6 +153,7 @@ const THEMES = [
     name: "Dress to Impress",
     bgColor: "#F7F7F7",
     bgImage: "url('background_themes/dress_to_impress/dress-to-impress.jpg')",
+    bgImageiPad: "url('background_themes/dress_to_impress/dress_to_impress_ipad.png')",
     cardBg: "rgba(201,183,226,0.9)",
     cardBorder: "#FF4FA3",
     primary: "#FF4FA3",
@@ -165,6 +170,7 @@ const THEMES = [
     name: "Brawl Stars",
     bgColor: "#1C2B39",
     bgImage: "url('background_themes/brawl_stars/brawl_stars.jpg')",
+    bgImageiPad: "url('background_themes/brawl_stars/brawl_stars_ipad.png')",
     cardBg: "rgba(28,43,57,0.9)",
     cardBorder: "#FFD21E",
     primary: "#FFD21E",
@@ -181,6 +187,7 @@ const THEMES = [
     name: "Back to the Future",
     bgColor: "#0A0A0A",
     bgImage: "url('background_themes/back%20to%20the%20future/back_to_the_future.jpg')",
+    bgImageiPad: "url('background_themes/back%20to%20the%20future/back_to_the_future_ipad.png')",
     cardBg: "rgba(10,10,10,0.85)",
     cardBorder: "#FF6A00",
     primary: "#FF6A00",
@@ -213,6 +220,7 @@ const THEMES = [
     name: "Kramel",
     bgColor: "#1F2A44",
     bgImage: "url('background_themes/kramel/kramel.avif')",
+    bgImageiPad: "url('background_themes/kramel/kramel_ipad.png')",
     cardBg: "rgba(247,238,220,0.9)",
     cardBorder: "#E07A2D",
     primary: "#E07A2D",
@@ -229,6 +237,7 @@ const THEMES = [
     name: "Toca Boca",
     bgColor: "#FFF2D9",
     bgImage: "url('background_themes/toca%20boca/tocal_boca.webp')",
+    bgImageiPad: "url('background_themes/toca%20boca/toca_boca_ipad.png')",
     cardBg: "rgba(91,192,255,0.85)",
     cardBorder: "#FF6FAE",
     primary: "#FF6FAE",
@@ -251,6 +260,7 @@ function applyTheme(index) {
 
   root.style.setProperty('--bg-color', theme.bgColor);
   root.style.setProperty('--bg-image', theme.bgImage);
+  root.style.setProperty('--bg-image-ipad', theme.bgImageiPad || theme.bgImage);
   root.style.setProperty('--card-bg', theme.cardBg);
   root.style.setProperty('--card-border', theme.cardBorder);
   root.style.setProperty('--primary', theme.primary);
@@ -982,8 +992,12 @@ document.getElementById("resetBtn").onclick=()=>{
   state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
   memory={deck:[], open:[], matched:new Set()};
-  // Select a random theme on reset
-  currentThemeIndex = Math.floor(Math.random() * THEMES.length);
+  // Select a different random theme on reset
+  let newThemeIndex;
+  do {
+    newThemeIndex = Math.floor(Math.random() * THEMES.length);
+  } while (newThemeIndex === currentThemeIndex && THEMES.length > 1);
+  currentThemeIndex = newThemeIndex;
   applyTheme(currentThemeIndex);
   save(state);
   render();
@@ -997,8 +1011,12 @@ document.getElementById("playAgainBtn").onclick = () => {
   state = {score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
   GAME_DATA.words.forEach(d => state.words[norm(d.word)] = {c:0, w:0});
   memory = {deck:[], open:[], matched:new Set(), waitingForClick: false};
-  // Select a random theme on play again
-  currentThemeIndex = Math.floor(Math.random() * THEMES.length);
+  // Select a different random theme on play again
+  let newThemeIndex;
+  do {
+    newThemeIndex = Math.floor(Math.random() * THEMES.length);
+  } while (newThemeIndex === currentThemeIndex && THEMES.length > 1);
+  currentThemeIndex = newThemeIndex;
   applyTheme(currentThemeIndex);
   save(state);
   render();
