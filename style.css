@@ -480,6 +480,10 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 /* ========== iPad / Tablet Optimization (10.9 inch) ========== */
 @media (min-width: 768px) and (max-width: 1180px) {
   body {
+    background-image:
+      radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--primary) 15%, transparent) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, color-mix(in srgb, var(--secondary) 10%, transparent) 0%, transparent 40%),
+      var(--bg-image-ipad);
     background-size: cover;
     background-position: center center;
     background-attachment: scroll; /* Better performance on iPad */
