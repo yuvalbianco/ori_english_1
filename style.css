@@ -396,6 +396,23 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
   margin-top:8px;
 }
 
+/* Sentence feedback after correct answer */
+.sentence-feedback{
+  margin-top:12px;
+  padding:12px;
+  background:color-mix(in srgb, var(--success) 15%, transparent);
+  border:1px solid var(--success);
+  border-radius:8px;
+  font-size:14px;
+  line-height:1.6;
+}
+.sentence-feedback div{
+  margin:4px 0;
+}
+.sentence-feedback strong{
+  color:var(--primary);
+}
+
 /* GIF popup celebration */
 .gif-popup{
   position:fixed;
