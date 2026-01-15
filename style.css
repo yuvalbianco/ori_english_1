@@ -478,13 +478,12 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 }
 
 /* ========== iPad / Tablet Optimization (10.9 inch) ========== */
-/* iPad Air 11" M2: 2360 x 1640 pixels, ~3:2 aspect ratio */
-/* Current wallpapers: 1280 x 720 (16:9) - will be cropped to fit */
 @media (min-width: 768px) and (max-width: 1180px) {
   body {
-    background-size: cover;
-    background-position: center top;
+    background-size: contain;
+    background-position: top center;
     background-attachment: scroll; /* Better performance on iPad */
+    background-repeat: no-repeat;
   }
 
   .app {

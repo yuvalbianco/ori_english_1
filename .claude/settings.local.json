@@ -2,10 +2,7 @@
   "permissions": {
     "allow": [
       "Bash(claude whoami:*)",
-      "Bash(git mv:*)",
-      "WebSearch",
-      "Bash(file:*)",
-      "Bash(sips:*)"
+      "Bash(git mv:*)"
     ]
   }
 }
