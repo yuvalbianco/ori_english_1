@@ -10,17 +10,21 @@
 <div class="app">
   <header class="header">
     <div>
-      <h1>אורי – משחק תרגול מילים באנגלית</h1>
-      <p class="sub">הוראות/כפתורים בעברית, ורק המילים והמשפטים באנגלית.</p>
+      <h1><span id="adminTrigger" style="cursor:pointer">אורי</span> – משחק תרגול מילים באנגלית</h1>
     </div>
     <div class="controls">
+      <label class="sr" for="themeSelect">בחירת ערכת נושא</label>
+      <select id="themeSelect"></select>
       <label class="sr" for="gameSelect">בחירת משחק</label>
-      <select id="gameSelect">
-        <option value="gap">A: השלמת משפט (בחירה מרובה)</option>
-        <option value="two">B: שני משפטים (נכון / לא נכון)</option>
-        <option value="builder">C: בניית משפט (סידור חלקים)</option>
-        <option value="memory">D: משחק זיכרון (מילה ↔ משפט)</option>
+      <select id="gameSelect" style="display:none">
+        <option value="gap">השלמת משפט (בחירה מרובה)</option>
+        <option value="two">שני משפטים (נכון / לא נכון)</option>
+        <option value="builder">בניית משפט (סידור חלקים)</option>
+        <option value="scramble">אותיות מבולבלות (איות)</option>
+        <option value="translate">תרגום לאנגלית</option>
       </select>
+      <label class="sr" for="surpriseSelect">הפתעה כל X תשובות</label>
+      <select id="surpriseSelect" style="display:none"></select>
       <button id="resetBtn" class="ghost">איפוס התקדמות</button>
     </div>
   </header>
@@ -50,7 +54,7 @@
 
     <section class="card">
       <h2>רשימת מילים</h2>
-      <p class="note">3 תשובות נכונות = המילה נלמדה. 2 טעויות = -1 נקודת למידה.</p>
+      <p class="note">3 תשובות נכונות = המילה נלמדה.</p>
       <div id="wordsTableContainer" class="words-table-container"></div>
     </section>
   </main>

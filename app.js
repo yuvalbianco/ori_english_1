@@ -2,7 +2,7 @@
 const STORE_KEY = "ori_all_games_progress_v2";
 const MASTERED_CORRECT = 3;
 const WRONG_PENALTY_THRESHOLD = 2;
-const CORRECT_FOR_THEME = 10;
+let CORRECT_FOR_THEME = 5;
 
 // ========== SOUND FX SYSTEM ==========
 const SUCCESS_SOUNDS = [
@@ -302,11 +302,16 @@ state.score ||= 0;
 state.streak ||= 0;
 state.game ||= "gap";
 state.correctUntilTheme ||= CORRECT_FOR_THEME;
+state.questionsUntilSwitch ||= Math.floor(Math.random() * 2) + 1; // 1 or 2
+// Initialize game counts for fair rotation
+if(!state.gameCounts){
+  state.gameCounts = {};
+  ["gap", "two", "builder", "scramble", "translate"].forEach(g => state.gameCounts[g] = 0);
+}
 save(state);
 
 let current = null;
 let answered = false;
-let memory = { deck: [], open: [], matched: new Set(), waitingForClick: false };
 
 function isLearned(key){
   const p = state.words[key];
@@ -351,6 +356,15 @@ function updateThemeCounter(){
   }
 }
 
+function setNextButtonEnabled(enabled){
+  const btn = document.getElementById("nextBtn");
+  if(btn){
+    btn.disabled = !enabled;
+    btn.style.opacity = enabled ? "1" : "0.5";
+    btn.style.cursor = enabled ? "pointer" : "not-allowed";
+  }
+}
+
 const CELEBRATION_GIFS = [
   'background_themes/gifs/200.gif',
   'background_themes/gifs/200w.gif',
@@ -358,52 +372,39 @@ const CELEBRATION_GIFS = [
   'background_themes/gifs/918e4a9a2f47418cba2f16f4ef7282be.gif',
   'background_themes/gifs/f2ab1af79d72d94a114bc9fe5a891835.gif',
   'background_themes/gifs/giphy.gif',
-  'background_themes/gifs/giphy (1).gif',
-  'background_themes/gifs/giphy (2).gif',
-  'background_themes/gifs/giphy (3).gif',
+  'background_themes/gifs/giphy%20(1).gif',
+  'background_themes/gifs/giphy%20(2).gif',
+  'background_themes/gifs/giphy%20(3).gif',
   'background_themes/gifs/love-you.gif',
   'background_themes/gifs/osmo-ion.gif',
   'background_themes/gifs/panda-gemoy.gif',
   'background_themes/gifs/salute-buzz-lightyear.gif',
   'background_themes/gifs/sleepover-hooray.gif',
   'background_themes/gifs/source.gif',
-  'background_themes/gifs/source (1).gif',
+  'background_themes/gifs/source%20(1).gif',
   'background_themes/gifs/woody-woodpecker-twerk.gif'
 ];
 
 // Surprise pool system - contains both theme indices and GIF paths
 function createSurprisePool(){
-  const pool = [];
-  // Add all theme indices
-  for(let i = 0; i < THEMES.length; i++){
-    pool.push({ type: 'theme', value: i });
-  }
-  // Add all GIFs
-  CELEBRATION_GIFS.forEach(gif => {
-    pool.push({ type: 'gif', value: gif });
-  });
+  // Surprise pool now only contains GIFs (no themes)
+  const pool = [...CELEBRATION_GIFS];
   // Shuffle the pool
   return pool.sort(() => Math.random() - 0.5);
 }
 
 function triggerSurprise(){
-  // Initialize pool if empty or not exists
-  if(!state.surprisePool || state.surprisePool.length === 0){
+  // Initialize pool if empty, not exists, or contains invalid data (old theme indices)
+  if(!state.surprisePool || state.surprisePool.length === 0 ||
+     typeof state.surprisePool[0] === 'number' ||
+     (typeof state.surprisePool[0] === 'string' && !state.surprisePool[0].includes('/'))){
     state.surprisePool = createSurprisePool();
   }
 
-  // Pick and remove from pool
-  const surprise = state.surprisePool.pop();
+  // Pick and remove from pool (GIFs only now)
+  const gifPath = state.surprisePool.pop();
   save(state);
-
-  if(surprise.type === 'theme'){
-    currentThemeIndex = surprise.value;
-    applyTheme(currentThemeIndex);
-    return 'theme';
-  } else {
-    showCelebrationGif(surprise.value);
-    return 'gif';
-  }
+  showCelebrationGif(gifPath);
 }
 
 function showCelebrationGif(gifPath){
@@ -518,10 +519,11 @@ function updateWordsTable(){
 }
 
 function instructionsFor(game){
-  if(game==="gap") return "A: השלמת משפט — בוחרים את המילה שחסרה במשפט (4 אפשרויות).";
-  if(game==="two") return "B: שני משפטים — בוחרים את המשפט שבו המילה משמשת נכון.";
-  if(game==="builder") return "C: בניית משפט — לחצו על חלקים כדי לבנות משפט בסדר נכון (בלי הקלדה).";
-  if(game==="memory") return "D: זיכרון — פותחים שני קלפים ומנסים להתאים מילה למשפט.";
+  if(game==="gap") return "השלמת משפט — בוחרים את המילה שחסרה במשפט (4 אפשרויות).";
+  if(game==="two") return "שני משפטים — בוחרים את המשפט שבו המילה משמשת נכון.";
+  if(game==="builder") return "בניית משפט — לחצו על חלקים כדי לבנות משפט בסדר נכון (בלי הקלדה).";
+  if(game==="scramble") return "אותיות מבולבלות — סדרו את האותיות כדי לאיית את המילה באנגלית.";
+  if(game==="translate") return "תרגום נכון — בחרו את המשפט באנגלית שמתאים לתרגום העברי.";
   return "";
 }
 
@@ -584,30 +586,23 @@ function onCorrect(wordKey){
   updateThemeCounter();
 }
 
-function onWrong(wordKey){
+function onWrong(wordKey, explanation, correctAnswer){
   playFailSound();
   state.words[wordKey].w++;
   state.streak = 0;
 
-  // Reset theme counter on wrong answer
-  state.correctUntilTheme = CORRECT_FOR_THEME;
+  // Don't reset surprise counter on wrong answer - keep progress
 
-  // Find the original word (with correct casing)
-  const originalWord = GAME_DATA.words.find(w => norm(w.word) === wordKey)?.word || wordKey;
-
-  // Check if we need to deduct a correct point
-  if(state.words[wordKey].w >= WRONG_PENALTY_THRESHOLD){
-    if(state.words[wordKey].c > 0){
-      state.words[wordKey].c--;
-      setFeedback(`לא נורא. 2 טעויות = -1 נקודת למידה למילה "${originalWord}". ננסה שוב!`);
-    } else {
-      setFeedback("לא נורא, ננסה שוב בהמשך.");
-    }
-    state.words[wordKey].w = 0; // Reset wrong counter
+  // Build feedback message with explanation
+  let feedbackMsg = "לא נכון. ";
+  if(explanation){
+    feedbackMsg += explanation;
+  } else if(correctAnswer){
+    feedbackMsg += `התשובה הנכונה היא: ${correctAnswer}`;
   } else {
-    const wrongsLeft = WRONG_PENALTY_THRESHOLD - state.words[wordKey].w;
-    setFeedback(`לא נורא. עוד ${wrongsLeft} טעויות ותאבד נקודת למידה למילה "${originalWord}".`);
+    feedbackMsg += "ננסה שוב בהמשך.";
   }
+  setFeedback(feedbackMsg);
 
   save(state);
   updateMeta();
@@ -640,6 +635,7 @@ function pickGap(){
 
 function renderGap(){
   answered=false;
+  setNextButtonEnabled(false);
   // Show theme counter in this game
   const themeCounter = document.getElementById("themeCounter");
   if(themeCounter) themeCounter.style.display = "";
@@ -649,6 +645,7 @@ function renderGap(){
     setPrompt("למדת את כל המילים! 🎉");
     setFeedback("");
     setAreaHTML("");
+    setNextButtonEnabled(true);
     return;
   }
   current = { type:"gap", q };
@@ -669,6 +666,7 @@ function renderGap(){
 function answerGap(choice, btn){
   if(answered) return;
   answered=true;
+  setNextButtonEnabled(true);
   const q = current.q;
   const key = norm(q.word);
   if(choice === q.answer){
@@ -684,7 +682,12 @@ function answerGap(choice, btn){
     [...document.querySelectorAll("#gapChoices .choice")].forEach(b => {
       if(b.textContent === q.answer) b.classList.add("good");
     });
-    onWrong(key);
+    // Build detailed Hebrew explanation
+    // Look up the Hebrew meaning of the wrong word chosen
+    const wrongWordData = GAME_DATA.words.find(w => norm(w.word) === norm(choice));
+    const wrongWordHe = wrongWordData ? wrongWordData.hint_he : choice;
+    const explanation = `המילה הנכונה היא ${q.answer} שאומרת "${q.hint_he}"; והמשפט צריך להיות: "${q.question_he}", אתה בחרת במילה "${choice}" שאומרת "${wrongWordHe}" ולא מתאימה במקרה הזה`;
+    onWrong(key, explanation, q.answer);
   }
 }
 
@@ -696,6 +699,7 @@ function pickTwo(){
 
 function renderTwo(){
   answered=false;
+  setNextButtonEnabled(false);
   // Show theme counter in this game
   const themeCounter = document.getElementById("themeCounter");
   if(themeCounter) themeCounter.style.display = "";
@@ -705,6 +709,7 @@ function renderTwo(){
     setPrompt("למדת את כל המילים! 🎉");
     setFeedback("");
     setAreaHTML("");
+    setNextButtonEnabled(true);
     return;
   }
   current = { type:"two", item };
@@ -730,6 +735,7 @@ function renderTwo(){
 function answerTwo(isCorrect, btn){
   if(answered) return;
   answered=true;
+  setNextButtonEnabled(true);
   const item = current.item;
   const key = norm(item.word);
   if(isCorrect){
@@ -746,7 +752,10 @@ function answerTwo(isCorrect, btn){
     [...document.querySelectorAll("#twoChoices .choice")].forEach(b=>{
       if(b.textContent === item.correct) b.classList.add("good");
     });
-    onWrong(key);
+    // Build detailed Hebrew explanation
+    const wrongHe = item.wrong_he || item.wrong;
+    const explanation = `בחרת במשפט "${wrongHe}" - זהו משפט לא נכון תחבירית. המשפט הנכון הוא "${item.correct}" שאומר "${item.correct_he}"`;
+    onWrong(key, explanation, item.correct);
   }
 }
 
@@ -758,6 +767,7 @@ function pickBuilder(){
 
 function renderBuilder(){
   answered=false;
+  setNextButtonEnabled(false);
   // Show theme counter in this game
   const themeCounter = document.getElementById("themeCounter");
   if(themeCounter) themeCounter.style.display = "";
@@ -767,6 +777,7 @@ function renderBuilder(){
     setPrompt("למדת את כל המילים! 🎉");
     setFeedback("");
     setAreaHTML("");
+    setNextButtonEnabled(true);
     return;
   }
   current = { type:"builder", item, built: [] };
@@ -810,6 +821,8 @@ function renderBuilder(){
       b.onclick=()=>{ current.built.push(tok); renderSlots(); renderTiles(); };
       tiles.appendChild(b);
     });
+    // Enable next button only when all tiles are placed
+    setNextButtonEnabled(current.built.length === tokens.length);
   }
   renderSlots(); renderTiles();
 }
@@ -830,8 +843,218 @@ function answerBuilder(){
     showSentenceFeedback(hintHe, item.sentence, item.sentence_he);
   } else {
     setPill("לא נכון");
-    onWrong(key);
-    setFeedback("לא נורא. המשפט הנכון הוא: " + item.sentence);
+    // Build detailed Hebrew explanation
+    const explanation = `המשפט הנכון הוא "${item.sentence}" שפירושו "${item.sentence_he}", אתה כתבת "${built}" שאינו נכון תחבירית`;
+    onWrong(key, explanation, item.sentence);
+  }
+}
+
+// ========== WORD SCRAMBLE GAME ==========
+function pickScramble(){
+  const unlearned = getUnlearnedWords(GAME_DATA.words);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
+}
+
+function renderScramble(){
+  answered=false;
+  setNextButtonEnabled(false);
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
+  const item = pickScramble();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    setNextButtonEnabled(true);
+    return;
+  }
+  const word = item.word;
+  const letters = word.split("");
+  const shuffled = [...letters].sort(() => Math.random() - 0.5);
+  // Make sure it's actually shuffled (not same as original)
+  if(shuffled.join("") === word && letters.length > 1){
+    shuffled.reverse();
+  }
+
+  current = { type:"scramble", item, word, letters, built: [] };
+  setPill("סדרו אותיות");
+  setPrompt(`המילה בעברית: "${item.hint_he}"`);
+  setFeedback("");
+
+  setAreaHTML(`
+    <div class="builderSlots" id="scrambleSlots"></div>
+    <div style="height:10px"></div>
+    <div class="tileRow" id="scrambleTiles"></div>
+  `);
+
+  const slots = document.getElementById("scrambleSlots");
+  const tiles = document.getElementById("scrambleTiles");
+
+  function renderSlots(){
+    slots.innerHTML="";
+    current.built.forEach((letter, idx)=>{
+      const s=document.createElement("button");
+      s.className="slotItem";
+      s.textContent=letter;
+      s.title="לחצו כדי להחזיר";
+      s.onclick=()=>{ current.built.splice(idx,1); renderSlots(); renderTiles(); };
+      slots.appendChild(s);
+    });
+  }
+
+  function renderTiles(){
+    tiles.innerHTML="";
+    // Track which shuffled indices are used
+    const usedIndices = [];
+    current.built.forEach((letter, builtIdx) => {
+      // Find the first unused index in shuffled that matches this letter
+      for(let i = 0; i < shuffled.length; i++){
+        if(shuffled[i] === letter && !usedIndices.includes(i)){
+          usedIndices.push(i);
+          break;
+        }
+      }
+    });
+
+    shuffled.forEach((letter, idx)=>{
+      const used = usedIndices.includes(idx);
+      const b=document.createElement("button");
+      b.className="tile"+(used?" used":"");
+      b.textContent=letter;
+      b.disabled=used;
+      b.onclick=()=>{
+        current.built.push(letter);
+        renderSlots();
+        renderTiles();
+      };
+      tiles.appendChild(b);
+    });
+    // Enable next button only when all letters are placed
+    setNextButtonEnabled(current.built.length === letters.length);
+  }
+  renderSlots(); renderTiles();
+}
+
+function answerScramble(){
+  if(answered) return;
+  answered=true;
+  const item = current.item;
+  const built = current.built.join("");
+  const target = current.word;
+  const key = norm(item.word);
+  if(built === target){
+    setPill("נכון");
+    setNextButtonEnabled(true);
+    onCorrect(key);
+    // Show feedback with example and Hebrew translation
+    const example = item.examples && item.examples[0] ? item.examples[0] : "";
+    if(example){
+      // Look up Hebrew translation from gap data
+      const gapItem = GAME_DATA.gap.find(g => {
+        const fullSentence = g.question.replace("____", g.answer);
+        return fullSentence.toLowerCase() === example.toLowerCase();
+      });
+      const exampleHe = gapItem ? gapItem.question_he : "";
+      if(exampleHe){
+        setFeedback(`המילה ${target} נכתבה נכון. לדוגמא: ${example} שאומרת "${exampleHe}"`);
+      } else {
+        setFeedback(`המילה ${target} נכתבה נכון. לדוגמא: ${example}`);
+      }
+    } else {
+      setFeedback(`המילה ${target} נכתבה נכון.`);
+    }
+  } else {
+    setPill("לא נכון");
+    setNextButtonEnabled(true);
+    const explanation = `האיות הנכון הוא "${target}", אתה כתבת "${built}"`;
+    onWrong(key, explanation, target);
+  }
+}
+
+// ========== HEBREW TO ENGLISH TRANSLATION GAME ==========
+function pickTranslate(){
+  const unlearned = getUnlearnedWords(GAME_DATA.gap);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
+}
+
+function renderTranslate(){
+  answered=false;
+  setNextButtonEnabled(false);
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
+  const item = pickTranslate();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    setNextButtonEnabled(true);
+    return;
+  }
+
+  // Get the correct sentence
+  const correctSentence = item.question.replace("____", item.answer);
+  const hebrewSentence = item.question_he;
+
+  // Generate wrong options by finding other sentences (with their Hebrew translations)
+  const otherItems = GAME_DATA.gap.filter(g => g.word !== item.word);
+  const shuffledOthers = otherItems.sort(() => Math.random() - 0.5);
+  const wrongOptionsData = shuffledOthers.slice(0, 2).map(g => ({
+    english: g.question.replace("____", g.answer),
+    hebrew: g.question_he
+  }));
+
+  // Build options map for lookup (english -> hebrew)
+  const optionsMap = {};
+  optionsMap[correctSentence] = hebrewSentence;
+  wrongOptionsData.forEach(opt => {
+    optionsMap[opt.english] = opt.hebrew;
+  });
+
+  // Combine and shuffle options
+  const allOptions = [correctSentence, ...wrongOptionsData.map(o => o.english)];
+  const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+
+  current = { type:"translate", item, correctSentence, hebrewSentence, optionsMap };
+  setPill("בחר תרגום");
+  setPrompt(`תרגמו לאנגלית: "${hebrewSentence}"`);
+  setFeedback("");
+
+  setAreaHTML(`<div class="grid1" id="translateChoices"></div>`);
+  const box = document.getElementById("translateChoices");
+  shuffledOptions.forEach(option => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = option;
+    b.onclick = () => answerTranslate(option, b);
+    box.appendChild(b);
+  });
+}
+
+function answerTranslate(choice, btn){
+  if(answered) return;
+  answered=true;
+  setNextButtonEnabled(true);
+  const item = current.item;
+  const key = norm(item.word);
+  if(choice === current.correctSentence){
+    setPill("נכון");
+    btn.classList.add("good");
+    onCorrect(key);
+    showSentenceFeedback(item.hint_he, current.correctSentence, current.hebrewSentence);
+  } else {
+    setPill("לא נכון");
+    btn.classList.add("bad");
+    [...document.querySelectorAll("#translateChoices .choice")].forEach(b => {
+      if(b.textContent === current.correctSentence) b.classList.add("good");
+    });
+    // Get Hebrew translation for the wrong choice
+    const chosenHebrew = current.optionsMap[choice] || choice;
+    const explanation = `בחרת "${choice}" שפירושו "${chosenHebrew}". התרגום הנכון הוא "${current.correctSentence}" שפירושו "${current.hebrewSentence}"`;
+    onWrong(key, explanation, current.correctSentence);
   }
 }
 
@@ -873,8 +1096,13 @@ function renderMemory(){
     setPrompt("למדת את כל המילים! 🎉");
     setFeedback("");
     setAreaHTML("");
+    setNextButtonEnabled(true);
     return;
   }
+
+  // Disable next button until memory game is complete
+  const isComplete = memory.matched.size === memory.deck.length;
+  setNextButtonEnabled(isComplete);
 
   setAreaHTML(`<div class="memoryGrid" id="memGrid"></div>`);
   const grid=document.getElementById("memGrid");
@@ -929,11 +1157,8 @@ function renderMemory(){
           // Check if puzzle is complete - only then trigger surprise
           if(memory.matched.size===memory.deck.length){
             triggerSurprise();
-            setFeedback("כל הכבוד! סיימתם סבב! 🎉");
-            setTimeout(()=>{
-              newMemoryGame();
-              renderMemory();
-            }, 1500);
+            setFeedback("כל הכבוד! סיימתם סבב! 🎉 לחץ הבא כדי להמשיך");
+            setNextButtonEnabled(true);
           } else {
             // Wait for user to click feedback or press Enter to continue
             memory.waitingForClick = true;
@@ -963,25 +1188,83 @@ function renderMemory(){
   });
 }
 
+// Auto game switching logic
+const ALL_GAMES = ["gap", "two", "builder", "scramble", "translate"];
+
+function switchGameIfNeeded(){
+  // Initialize game play counts if not exists
+  if(!state.gameCounts){
+    state.gameCounts = {};
+    ALL_GAMES.forEach(g => state.gameCounts[g] = 0);
+  }
+
+  // Increment count for current game
+  state.gameCounts[state.game] = (state.gameCounts[state.game] || 0) + 1;
+
+  // Decrement questions until switch
+  state.questionsUntilSwitch = (state.questionsUntilSwitch || 1) - 1;
+
+  // Time to switch games
+  if(state.questionsUntilSwitch <= 0){
+    // Find games that can be played (not more than 2 ahead of the minimum)
+    const counts = ALL_GAMES.map(g => state.gameCounts[g] || 0);
+    const minCount = Math.min(...counts);
+
+    // Games that are eligible: played at most minCount + 1 times (allowing 2 consecutive max)
+    // But we should switch to a DIFFERENT game
+    const currentGame = state.game;
+    const eligibleGames = ALL_GAMES.filter(g => {
+      const count = state.gameCounts[g] || 0;
+      // Can play if not more than 1 ahead of minimum, and it's not the current game
+      return count <= minCount + 1 && g !== currentGame;
+    });
+
+    // If no eligible games (shouldn't happen), fall back to any other game
+    const candidates = eligibleGames.length > 0 ? eligibleGames : ALL_GAMES.filter(g => g !== currentGame);
+
+    // Pick randomly from candidates
+    const newGame = candidates[Math.floor(Math.random() * candidates.length)];
+    state.game = newGame;
+    document.getElementById("gameSelect").value = newGame;
+
+    // Reset counter: next switch in 1 or 2 questions
+    state.questionsUntilSwitch = Math.floor(Math.random() * 2) + 1;
+  }
+
+  save(state);
+}
+
 function render(){
   updateMeta(); updateWordsTable(); updateThemeCounter();
-  const g=document.getElementById("gameSelect").value;
-  state.game=g; save(state);
+  // Use state.game as the source of truth
+  const g = state.game || "gap";
+  // Sync dropdown to match state
+  document.getElementById("gameSelect").value = g;
+  save(state);
   document.getElementById("instructions").textContent=instructionsFor(g);
 
   if(g==="gap") return renderGap();
   if(g==="two") return renderTwo();
   if(g==="builder") return renderBuilder();
-  if(g==="memory") return renderMemory();
+  if(g==="scramble") return renderScramble();
+  if(g==="translate") return renderTranslate();
 }
 
 document.getElementById("gameSelect").addEventListener("change", e=>setGame(e.target.value));
 
 document.getElementById("nextBtn").onclick=()=>{
+  // Handle builder game - click Next to submit answer
   if(state.game==="builder"){
     if(!answered) return answerBuilder();
   }
-  if(state.game==="memory") newMemoryGame();
+  // Handle scramble game - click Next to submit answer
+  if(state.game==="scramble"){
+    if(!answered) return answerScramble();
+  }
+  // Switch games after an answer was given
+  if(answered){
+    switchGameIfNeeded();
+  }
   render();
 };
 
@@ -989,16 +1272,11 @@ document.getElementById("resetBtn").onclick=()=>{
   const ok=window.confirm("איפוס ימחק את כל ההתקדמות במכשיר הזה (נקודות, רצף והיסטוריית תשובות). בטוחים שתרצו לאפס?");
   if(!ok) return;
   localStorage.removeItem(STORE_KEY);
-  state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
+  const initialGameCounts = {};
+  ALL_GAMES.forEach(g => initialGameCounts[g] = 0);
+  state={score:0, streak:0, game: ALL_GAMES[Math.floor(Math.random() * ALL_GAMES.length)], words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionsUntilSwitch: Math.floor(Math.random() * 2) + 1, gameCounts: initialGameCounts};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
-  memory={deck:[], open:[], matched:new Set()};
-  // Select a different random theme on reset
-  let newThemeIndex;
-  do {
-    newThemeIndex = Math.floor(Math.random() * THEMES.length);
-  } while (newThemeIndex === currentThemeIndex && THEMES.length > 1);
-  currentThemeIndex = newThemeIndex;
-  applyTheme(currentThemeIndex);
+  // Keep current theme on reset (don't change)
   save(state);
   render();
 };
@@ -1008,18 +1286,64 @@ document.getElementById("playAgainBtn").onclick = () => {
   hideWinningScreen();
   // Reset all progress
   localStorage.removeItem(STORE_KEY);
-  state = {score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool()};
+  const initialGameCounts = {};
+  ALL_GAMES.forEach(g => initialGameCounts[g] = 0);
+  state = {score:0, streak:0, game: ALL_GAMES[Math.floor(Math.random() * ALL_GAMES.length)], words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionsUntilSwitch: Math.floor(Math.random() * 2) + 1, gameCounts: initialGameCounts};
   GAME_DATA.words.forEach(d => state.words[norm(d.word)] = {c:0, w:0});
-  memory = {deck:[], open:[], matched:new Set(), waitingForClick: false};
-  // Select a different random theme on play again
-  let newThemeIndex;
-  do {
-    newThemeIndex = Math.floor(Math.random() * THEMES.length);
-  } while (newThemeIndex === currentThemeIndex && THEMES.length > 1);
-  currentThemeIndex = newThemeIndex;
-  applyTheme(currentThemeIndex);
+  // Keep current theme on play again (don't change)
   save(state);
   render();
+};
+
+// ========== ADMIN HACK - 3 clicks on "אורי" in 5 seconds ==========
+let adminClicks = [];
+let adminControlsVisible = false;
+const ADMIN_CLICK_COUNT = 3;
+const ADMIN_CLICK_TIMEOUT = 5000; // 5 seconds
+
+document.getElementById("adminTrigger").onclick = () => {
+  const now = Date.now();
+  // Remove clicks older than 5 seconds
+  adminClicks = adminClicks.filter(t => now - t < ADMIN_CLICK_TIMEOUT);
+  adminClicks.push(now);
+
+  if(adminClicks.length >= ADMIN_CLICK_COUNT){
+    // Toggle hidden admin controls
+    adminControlsVisible = !adminControlsVisible;
+    document.getElementById("gameSelect").style.display = adminControlsVisible ? "" : "none";
+    document.getElementById("surpriseSelect").style.display = adminControlsVisible ? "" : "none";
+    adminClicks = []; // Reset
+  }
+};
+
+// ========== THEME SELECTOR ==========
+const themeSelect = document.getElementById("themeSelect");
+THEMES.forEach((theme, index) => {
+  const option = document.createElement("option");
+  option.value = index;
+  option.textContent = theme.name;
+  themeSelect.appendChild(option);
+});
+themeSelect.value = currentThemeIndex;
+themeSelect.onchange = () => {
+  currentThemeIndex = parseInt(themeSelect.value);
+  applyTheme(currentThemeIndex);
+};
+
+// ========== SURPRISE TIMING SELECTOR (1-15) ==========
+const surpriseSelect = document.getElementById("surpriseSelect");
+for(let i = 1; i <= 15; i++){
+  const option = document.createElement("option");
+  option.value = i;
+  option.textContent = `הפתעה כל ${i} תשובות`;
+  surpriseSelect.appendChild(option);
+}
+surpriseSelect.value = CORRECT_FOR_THEME;
+surpriseSelect.onchange = () => {
+  CORRECT_FOR_THEME = parseInt(surpriseSelect.value);
+  state.correctUntilTheme = CORRECT_FOR_THEME;
+  save(state);
+  updateThemeCounter();
 };
 
 // Initialize
