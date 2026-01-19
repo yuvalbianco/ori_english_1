@@ -302,13 +302,16 @@ state.score ||= 0;
 state.streak ||= 0;
 state.game ||= "gap";
 state.correctUntilTheme ||= CORRECT_FOR_THEME;
-state.questionCount ||= 0;
 state.questionsUntilSwitch ||= Math.floor(Math.random() * 2) + 1; // 1 or 2
+// Initialize game counts for fair rotation
+if(!state.gameCounts){
+  state.gameCounts = {};
+  ["gap", "two", "builder", "scramble", "translate"].forEach(g => state.gameCounts[g] = 0);
+}
 save(state);
 
 let current = null;
 let answered = false;
-let memory = { deck: [], open: [], matched: new Set(), waitingForClick: false };
 
 function isLearned(key){
   const p = state.words[key];
@@ -519,7 +522,8 @@ function instructionsFor(game){
   if(game==="gap") return "השלמת משפט — בוחרים את המילה שחסרה במשפט (4 אפשרויות).";
   if(game==="two") return "שני משפטים — בוחרים את המשפט שבו המילה משמשת נכון.";
   if(game==="builder") return "בניית משפט — לחצו על חלקים כדי לבנות משפט בסדר נכון (בלי הקלדה).";
-  if(game==="memory") return "זיכרון — פותחים שני קלפים ומנסים להתאים מילה למשפט.";
+  if(game==="scramble") return "אותיות מבולבלות — סדרו את האותיות כדי לאיית את המילה באנגלית.";
+  if(game==="translate") return "תרגום נכון — בחרו את המשפט באנגלית שמתאים לתרגום העברי.";
   return "";
 }
 
@@ -845,6 +849,215 @@ function answerBuilder(){
   }
 }
 
+// ========== WORD SCRAMBLE GAME ==========
+function pickScramble(){
+  const unlearned = getUnlearnedWords(GAME_DATA.words);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
+}
+
+function renderScramble(){
+  answered=false;
+  setNextButtonEnabled(false);
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
+  const item = pickScramble();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    setNextButtonEnabled(true);
+    return;
+  }
+  const word = item.word;
+  const letters = word.split("");
+  const shuffled = [...letters].sort(() => Math.random() - 0.5);
+  // Make sure it's actually shuffled (not same as original)
+  if(shuffled.join("") === word && letters.length > 1){
+    shuffled.reverse();
+  }
+
+  current = { type:"scramble", item, word, letters, built: [] };
+  setPill("סדרו אותיות");
+  setPrompt(`המילה בעברית: "${item.hint_he}"`);
+  setFeedback("");
+
+  setAreaHTML(`
+    <div class="builderSlots" id="scrambleSlots"></div>
+    <div style="height:10px"></div>
+    <div class="tileRow" id="scrambleTiles"></div>
+  `);
+
+  const slots = document.getElementById("scrambleSlots");
+  const tiles = document.getElementById("scrambleTiles");
+
+  function renderSlots(){
+    slots.innerHTML="";
+    current.built.forEach((letter, idx)=>{
+      const s=document.createElement("button");
+      s.className="slotItem";
+      s.textContent=letter;
+      s.title="לחצו כדי להחזיר";
+      s.onclick=()=>{ current.built.splice(idx,1); renderSlots(); renderTiles(); };
+      slots.appendChild(s);
+    });
+  }
+
+  function renderTiles(){
+    tiles.innerHTML="";
+    // Track which shuffled indices are used
+    const usedIndices = [];
+    current.built.forEach((letter, builtIdx) => {
+      // Find the first unused index in shuffled that matches this letter
+      for(let i = 0; i < shuffled.length; i++){
+        if(shuffled[i] === letter && !usedIndices.includes(i)){
+          usedIndices.push(i);
+          break;
+        }
+      }
+    });
+
+    shuffled.forEach((letter, idx)=>{
+      const used = usedIndices.includes(idx);
+      const b=document.createElement("button");
+      b.className="tile"+(used?" used":"");
+      b.textContent=letter;
+      b.disabled=used;
+      b.onclick=()=>{
+        current.built.push(letter);
+        renderSlots();
+        renderTiles();
+      };
+      tiles.appendChild(b);
+    });
+    // Enable next button only when all letters are placed
+    setNextButtonEnabled(current.built.length === letters.length);
+  }
+  renderSlots(); renderTiles();
+}
+
+function answerScramble(){
+  if(answered) return;
+  answered=true;
+  const item = current.item;
+  const built = current.built.join("");
+  const target = current.word;
+  const key = norm(item.word);
+  if(built === target){
+    setPill("נכון");
+    setNextButtonEnabled(true);
+    onCorrect(key);
+    // Show feedback with example and Hebrew translation
+    const example = item.examples && item.examples[0] ? item.examples[0] : "";
+    if(example){
+      // Look up Hebrew translation from gap data
+      const gapItem = GAME_DATA.gap.find(g => {
+        const fullSentence = g.question.replace("____", g.answer);
+        return fullSentence.toLowerCase() === example.toLowerCase();
+      });
+      const exampleHe = gapItem ? gapItem.question_he : "";
+      if(exampleHe){
+        setFeedback(`המילה ${target} נכתבה נכון. לדוגמא: ${example} שאומרת "${exampleHe}"`);
+      } else {
+        setFeedback(`המילה ${target} נכתבה נכון. לדוגמא: ${example}`);
+      }
+    } else {
+      setFeedback(`המילה ${target} נכתבה נכון.`);
+    }
+  } else {
+    setPill("לא נכון");
+    setNextButtonEnabled(true);
+    const explanation = `האיות הנכון הוא "${target}", אתה כתבת "${built}"`;
+    onWrong(key, explanation, target);
+  }
+}
+
+// ========== HEBREW TO ENGLISH TRANSLATION GAME ==========
+function pickTranslate(){
+  const unlearned = getUnlearnedWords(GAME_DATA.gap);
+  if(unlearned.length === 0) return null;
+  return unlearned[Math.floor(Math.random()*unlearned.length)];
+}
+
+function renderTranslate(){
+  answered=false;
+  setNextButtonEnabled(false);
+  const themeCounter = document.getElementById("themeCounter");
+  if(themeCounter) themeCounter.style.display = "";
+  const item = pickTranslate();
+  if(!item){
+    setPill("כל הכבוד!");
+    setPrompt("למדת את כל המילים! 🎉");
+    setFeedback("");
+    setAreaHTML("");
+    setNextButtonEnabled(true);
+    return;
+  }
+
+  // Get the correct sentence
+  const correctSentence = item.question.replace("____", item.answer);
+  const hebrewSentence = item.question_he;
+
+  // Generate wrong options by finding other sentences (with their Hebrew translations)
+  const otherItems = GAME_DATA.gap.filter(g => g.word !== item.word);
+  const shuffledOthers = otherItems.sort(() => Math.random() - 0.5);
+  const wrongOptionsData = shuffledOthers.slice(0, 2).map(g => ({
+    english: g.question.replace("____", g.answer),
+    hebrew: g.question_he
+  }));
+
+  // Build options map for lookup (english -> hebrew)
+  const optionsMap = {};
+  optionsMap[correctSentence] = hebrewSentence;
+  wrongOptionsData.forEach(opt => {
+    optionsMap[opt.english] = opt.hebrew;
+  });
+
+  // Combine and shuffle options
+  const allOptions = [correctSentence, ...wrongOptionsData.map(o => o.english)];
+  const shuffledOptions = allOptions.sort(() => Math.random() - 0.5);
+
+  current = { type:"translate", item, correctSentence, hebrewSentence, optionsMap };
+  setPill("בחר תרגום");
+  setPrompt(`תרגמו לאנגלית: "${hebrewSentence}"`);
+  setFeedback("");
+
+  setAreaHTML(`<div class="grid1" id="translateChoices"></div>`);
+  const box = document.getElementById("translateChoices");
+  shuffledOptions.forEach(option => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = option;
+    b.onclick = () => answerTranslate(option, b);
+    box.appendChild(b);
+  });
+}
+
+function answerTranslate(choice, btn){
+  if(answered) return;
+  answered=true;
+  setNextButtonEnabled(true);
+  const item = current.item;
+  const key = norm(item.word);
+  if(choice === current.correctSentence){
+    setPill("נכון");
+    btn.classList.add("good");
+    onCorrect(key);
+    showSentenceFeedback(item.hint_he, current.correctSentence, current.hebrewSentence);
+  } else {
+    setPill("לא נכון");
+    btn.classList.add("bad");
+    [...document.querySelectorAll("#translateChoices .choice")].forEach(b => {
+      if(b.textContent === current.correctSentence) b.classList.add("good");
+    });
+    // Get Hebrew translation for the wrong choice
+    const chosenHebrew = current.optionsMap[choice] || choice;
+    const explanation = `בחרת "${choice}" שפירושו "${chosenHebrew}". התרגום הנכון הוא "${current.correctSentence}" שפירושו "${current.hebrewSentence}"`;
+    onWrong(key, explanation, current.correctSentence);
+  }
+}
+
 function newMemoryGame(){
   // Only use unlearned words for memory game
   const unlearned = getUnlearnedWords(GAME_DATA.memory);
@@ -976,34 +1189,44 @@ function renderMemory(){
 }
 
 // Auto game switching logic
-const FIRST_THREE_GAMES = ["gap", "two", "builder"];
+const ALL_GAMES = ["gap", "two", "builder", "scramble", "translate"];
 
 function switchGameIfNeeded(){
-  // Don't switch if currently in memory game (let it finish)
-  if(state.game === "memory") return;
-
-  // Increment question count
-  state.questionCount = (state.questionCount || 0) + 1;
-
-  // Every 10 questions: switch to memory game
-  if(state.questionCount % 10 === 0){
-    state.game = "memory";
-    document.getElementById("gameSelect").value = "memory";
-    save(state);
-    return;
+  // Initialize game play counts if not exists
+  if(!state.gameCounts){
+    state.gameCounts = {};
+    ALL_GAMES.forEach(g => state.gameCounts[g] = 0);
   }
+
+  // Increment count for current game
+  state.gameCounts[state.game] = (state.gameCounts[state.game] || 0) + 1;
 
   // Decrement questions until switch
   state.questionsUntilSwitch = (state.questionsUntilSwitch || 1) - 1;
 
-  // Time to switch to a different game from the first 3
+  // Time to switch games
   if(state.questionsUntilSwitch <= 0){
-    // Pick a different game from the first 3
+    // Find games that can be played (not more than 2 ahead of the minimum)
+    const counts = ALL_GAMES.map(g => state.gameCounts[g] || 0);
+    const minCount = Math.min(...counts);
+
+    // Games that are eligible: played at most minCount + 1 times (allowing 2 consecutive max)
+    // But we should switch to a DIFFERENT game
     const currentGame = state.game;
-    const otherGames = FIRST_THREE_GAMES.filter(g => g !== currentGame);
-    const newGame = otherGames[Math.floor(Math.random() * otherGames.length)];
+    const eligibleGames = ALL_GAMES.filter(g => {
+      const count = state.gameCounts[g] || 0;
+      // Can play if not more than 1 ahead of minimum, and it's not the current game
+      return count <= minCount + 1 && g !== currentGame;
+    });
+
+    // If no eligible games (shouldn't happen), fall back to any other game
+    const candidates = eligibleGames.length > 0 ? eligibleGames : ALL_GAMES.filter(g => g !== currentGame);
+
+    // Pick randomly from candidates
+    const newGame = candidates[Math.floor(Math.random() * candidates.length)];
     state.game = newGame;
     document.getElementById("gameSelect").value = newGame;
+
     // Reset counter: next switch in 1 or 2 questions
     state.questionsUntilSwitch = Math.floor(Math.random() * 2) + 1;
   }
@@ -1023,24 +1246,23 @@ function render(){
   if(g==="gap") return renderGap();
   if(g==="two") return renderTwo();
   if(g==="builder") return renderBuilder();
-  if(g==="memory") return renderMemory();
+  if(g==="scramble") return renderScramble();
+  if(g==="translate") return renderTranslate();
 }
 
 document.getElementById("gameSelect").addEventListener("change", e=>setGame(e.target.value));
 
 document.getElementById("nextBtn").onclick=()=>{
+  // Handle builder game - click Next to submit answer
   if(state.game==="builder"){
     if(!answered) return answerBuilder();
   }
-  if(state.game==="memory"){
-    // After memory game, switch back to one of the first 3 games
-    const newGame = FIRST_THREE_GAMES[Math.floor(Math.random() * FIRST_THREE_GAMES.length)];
-    state.game = newGame;
-    document.getElementById("gameSelect").value = newGame;
-    state.questionsUntilSwitch = Math.floor(Math.random() * 2) + 1;
-    save(state);
-  } else if(answered){
-    // Only switch games after an answer was given (not for builder submit)
+  // Handle scramble game - click Next to submit answer
+  if(state.game==="scramble"){
+    if(!answered) return answerScramble();
+  }
+  // Switch games after an answer was given
+  if(answered){
     switchGameIfNeeded();
   }
   render();
@@ -1050,9 +1272,10 @@ document.getElementById("resetBtn").onclick=()=>{
   const ok=window.confirm("איפוס ימחק את כל ההתקדמות במכשיר הזה (נקודות, רצף והיסטוריית תשובות). בטוחים שתרצו לאפס?");
   if(!ok) return;
   localStorage.removeItem(STORE_KEY);
-  state={score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionCount: 0, questionsUntilSwitch: Math.floor(Math.random() * 2) + 1};
+  const initialGameCounts = {};
+  ALL_GAMES.forEach(g => initialGameCounts[g] = 0);
+  state={score:0, streak:0, game: ALL_GAMES[Math.floor(Math.random() * ALL_GAMES.length)], words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionsUntilSwitch: Math.floor(Math.random() * 2) + 1, gameCounts: initialGameCounts};
   GAME_DATA.words.forEach(d=> state.words[norm(d.word)]={c:0,w:0});
-  memory={deck:[], open:[], matched:new Set()};
   // Keep current theme on reset (don't change)
   save(state);
   render();
@@ -1063,9 +1286,10 @@ document.getElementById("playAgainBtn").onclick = () => {
   hideWinningScreen();
   // Reset all progress
   localStorage.removeItem(STORE_KEY);
-  state = {score:0, streak:0, game:document.getElementById("gameSelect").value, words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionCount: 0, questionsUntilSwitch: Math.floor(Math.random() * 2) + 1};
+  const initialGameCounts = {};
+  ALL_GAMES.forEach(g => initialGameCounts[g] = 0);
+  state = {score:0, streak:0, game: ALL_GAMES[Math.floor(Math.random() * ALL_GAMES.length)], words:{}, correctUntilTheme: CORRECT_FOR_THEME, surprisePool: createSurprisePool(), questionsUntilSwitch: Math.floor(Math.random() * 2) + 1, gameCounts: initialGameCounts};
   GAME_DATA.words.forEach(d => state.words[norm(d.word)] = {c:0, w:0});
-  memory = {deck:[], open:[], matched:new Set(), waitingForClick: false};
   // Keep current theme on play again (don't change)
   save(state);
   render();
