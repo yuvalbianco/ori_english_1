@@ -1649,6 +1649,7 @@ const GAME_DATA = {
       "correct": "Tell me about your day.",
       "correct_he": "ספר לי על היום שלך.",
       "wrong": "I about to the park yesterday.",
+      "wrong_he": "אני על לפארק אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1656,6 +1657,7 @@ const GAME_DATA = {
       "correct": "We eat dessert after dinner.",
       "correct_he": "אנחנו אוכלים קינוח אחרי ארוחת ערב.",
       "wrong": "I will after my homework now.",
+      "wrong_he": "אני אחרי את שיעורי הבית עכשיו.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1663,6 +1665,7 @@ const GAME_DATA = {
       "correct": "I do my homework in the afternoon.",
       "correct_he": "אני עושה שיעורי בית אחר הצהריים.",
       "wrong": "I afternoon my room every day.",
+      "wrong_he": "אני אחר הצהריים את החדר שלי כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1670,6 +1673,7 @@ const GAME_DATA = {
       "correct": "All the students are in the classroom.",
       "correct_he": "כל התלמידים בכיתה.",
       "wrong": "I all my lunch at school.",
+      "wrong_he": "אני כל את ארוחת הצהריים שלי בבית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1677,6 +1681,7 @@ const GAME_DATA = {
       "correct": "Can I have another cookie, please?",
       "correct_he": "אפשר עוד עוגייה, בבקשה?",
       "wrong": "I another to the store yesterday.",
+      "wrong_he": "אני עוד אחד לחנות אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1684,6 +1689,7 @@ const GAME_DATA = {
       "correct": "Wash your hands before you eat.",
       "correct_he": "שטוף את הידיים לפני שאתה אוכל.",
       "wrong": "I before my teeth every morning.",
+      "wrong_he": "אני לפני את השיניים שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1691,6 +1697,7 @@ const GAME_DATA = {
       "correct": "I eat breakfast at 7 o'clock.",
       "correct_he": "אני אוכל ארוחת בוקר בשבע.",
       "wrong": "Please breakfast the door when you leave.",
+      "wrong_he": "בבקשה ארוחת בוקר את הדלת כשאתה יוצא.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1698,6 +1705,7 @@ const GAME_DATA = {
       "correct": "Please call me when you get home.",
       "correct_he": "בבקשה תתקשר אליי כשתגיע הביתה.",
       "wrong": "The call is very sunny today.",
+      "wrong_he": "השיחה מאוד שמשית היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1705,6 +1713,7 @@ const GAME_DATA = {
       "correct": "Try to catch the ball.",
       "correct_he": "נסה לתפוס את הכדור.",
       "wrong": "The catch is blue and cloudy.",
+      "wrong_he": "התפיסה כחולה ומעוננת.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1712,6 +1721,7 @@ const GAME_DATA = {
       "correct": "Please clean your room.",
       "correct_he": "בבקשה נקה את החדר שלך.",
       "wrong": "I clean to school every morning.",
+      "wrong_he": "אני נקי לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1719,6 +1729,7 @@ const GAME_DATA = {
       "correct": "Each student has a notebook.",
       "correct_he": "לכל תלמיד יש מחברת.",
       "wrong": "I each my breakfast at home.",
+      "wrong_he": "אני כל אחד את ארוחת הבוקר שלי בבית.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1726,6 +1737,7 @@ const GAME_DATA = {
       "correct": "We watch TV in the evening.",
       "correct_he": "אנחנו צופים בטלוויזיה בערב.",
       "wrong": "Can you evening me your pencil?",
+      "wrong_he": "אתה יכול ערב לי את העיפרון שלך?",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1733,6 +1745,7 @@ const GAME_DATA = {
       "correct": "Everyone is ready to start.",
       "correct_he": "כולם מוכנים להתחיל.",
       "wrong": "I everyone my bike to school.",
+      "wrong_he": "אני כולם את האופניים שלי לבית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1740,6 +1753,7 @@ const GAME_DATA = {
       "correct": "Leaves fall from the trees in autumn.",
       "correct_he": "עלים נופלים מהעצים בסתיו.",
       "wrong": "I fall my friend at the park.",
+      "wrong_he": "אני נופל את החבר שלי בפארק.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1747,6 +1761,7 @@ const GAME_DATA = {
       "correct": "I get to school at eight.",
       "correct_he": "אני מגיע לבית הספר בשמונה.",
       "wrong": "The get is shining brightly today.",
+      "wrong_he": "ה'גט' זורח בהיר היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1754,6 +1769,7 @@ const GAME_DATA = {
       "correct": "I drink water from a glass.",
       "correct_he": "אני שותה מים מכוס.",
       "wrong": "Please glass your homework now.",
+      "wrong_he": "בבקשה כוס את שיעורי הבית שלך עכשיו.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1761,6 +1777,7 @@ const GAME_DATA = {
       "correct": "Can you guess the answer?",
       "correct_he": "אתה יכול לנחש את התשובה?",
       "wrong": "I guess to school by bus.",
+      "wrong_he": "אני מנחש לבית הספר באוטובוס.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1768,6 +1785,7 @@ const GAME_DATA = {
       "correct": "I go home after school.",
       "correct_he": "אני הולך הביתה אחרי בית הספר.",
       "wrong": "Can you home this book for me?",
+      "wrong_he": "אתה יכול בית את הספר הזה בשבילי?",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1775,6 +1793,7 @@ const GAME_DATA = {
       "correct": "This game is kind of hard.",
       "correct_he": "המשחק הזה קצת קשה.",
       "wrong": "I kind of to the store yesterday.",
+      "wrong_he": "אני קצת לחנות אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1782,6 +1801,7 @@ const GAME_DATA = {
       "correct": "Don't be late for class.",
       "correct_he": "אל תאחר לשיעור.",
       "wrong": "I late my sandwich for lunch.",
+      "wrong_he": "אני מאחר את הסנדוויץ' שלי לארוחת צהריים.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1789,6 +1809,7 @@ const GAME_DATA = {
       "correct": "Look at the board, please.",
       "correct_he": "תסתכל על הלוח, בבקשה.",
       "wrong": "I look at to school every day.",
+      "wrong_he": "אני מסתכל על לבית הספר כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1796,6 +1817,7 @@ const GAME_DATA = {
       "correct": "I eat lunch at school.",
       "correct_he": "אני אוכל ארוחת צהריים בבית הספר.",
       "wrong": "Please lunch the window, it's cold.",
+      "wrong_he": "בבקשה ארוחת צהריים את החלון, קר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1803,6 +1825,7 @@ const GAME_DATA = {
       "correct": "There are many books on the shelf.",
       "correct_he": "יש הרבה ספרים על המדף.",
       "wrong": "I many my room every Saturday.",
+      "wrong_he": "אני הרבה את החדר שלי כל שבת.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1810,6 +1833,7 @@ const GAME_DATA = {
       "correct": "The moon is bright tonight.",
       "correct_he": "הירח בהיר הלילה.",
       "wrong": "I moon my homework after dinner.",
+      "wrong_he": "אני ירח את שיעורי הבית אחרי ארוחת ערב.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1817,6 +1841,7 @@ const GAME_DATA = {
       "correct": "My parents work every day.",
       "correct_he": "ההורים שלי עובדים כל יום.",
       "wrong": "I parents to the beach last summer.",
+      "wrong_he": "אני הורים לחוף בקיץ שעבר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1824,6 +1849,7 @@ const GAME_DATA = {
       "correct": "Please pick up your toys.",
       "correct_he": "בבקשה תרים את הצעצועים שלך.",
       "wrong": "The pick up is very delicious.",
+      "wrong_he": "ההרמה מאוד טעימה.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1831,6 +1857,7 @@ const GAME_DATA = {
       "correct": "The library is quiet.",
       "correct_he": "הספרייה שקטה.",
       "wrong": "I quiet my breakfast at home.",
+      "wrong_he": "אני שקט את ארוחת הבוקר שלי בבית.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1838,6 +1865,7 @@ const GAME_DATA = {
       "correct": "The king was rich.",
       "correct_he": "המלך היה עשיר.",
       "wrong": "I rich to school every morning.",
+      "wrong_he": "אני עשיר לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1845,6 +1873,7 @@ const GAME_DATA = {
       "correct": "I sometimes play games after school.",
       "correct_he": "אני לפעמים משחק משחקים אחרי בית הספר.",
       "wrong": "The sometimes is very beautiful today.",
+      "wrong_he": "הלפעמים מאוד יפה היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1852,6 +1881,7 @@ const GAME_DATA = {
       "correct": "My favorite sport is basketball.",
       "correct_he": "הספורט האהוב עליי הוא כדורסל.",
       "wrong": "I sport my teeth every night.",
+      "wrong_he": "אני ספורט את השיניים שלי כל לילה.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1859,6 +1889,7 @@ const GAME_DATA = {
       "correct": "We have supper at 7 pm.",
       "correct_he": "אנחנו אוכלים ארוחת ערב בשבע בערב.",
       "wrong": "Please supper the door behind you.",
+      "wrong_he": "בבקשה ארוחת ערב את הדלת מאחוריך.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1866,6 +1897,7 @@ const GAME_DATA = {
       "correct": "Thanks for your help.",
       "correct_he": "תודה על העזרה שלך.",
       "wrong": "I thanks to school by car.",
+      "wrong_he": "אני תודה לבית הספר במכונית.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1873,6 +1905,7 @@ const GAME_DATA = {
       "correct": "This thing is very important.",
       "correct_he": "הדבר הזה מאוד חשוב.",
       "wrong": "I thing to the park yesterday.",
+      "wrong_he": "אני דבר לפארק אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1880,6 +1913,7 @@ const GAME_DATA = {
       "correct": "I think this is a good idea.",
       "correct_he": "אני חושב שזה רעיון טוב.",
       "wrong": "The think is on the table.",
+      "wrong_he": "החשיבה על השולחן.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1887,6 +1921,7 @@ const GAME_DATA = {
       "correct": "This bag is too heavy.",
       "correct_he": "התיק הזה כבד מדי.",
       "wrong": "I too my lunch at noon.",
+      "wrong_he": "אני גם את ארוחת הצהריים שלי בצהריים.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1894,6 +1929,7 @@ const GAME_DATA = {
       "correct": "My town is small and quiet.",
       "correct_he": "העיירה שלי קטנה ושקטה.",
       "wrong": "I town my homework every day.",
+      "wrong_he": "אני עיירה את שיעורי הבית שלי כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1901,6 +1937,7 @@ const GAME_DATA = {
       "correct": "Wait here until I come back.",
       "correct_he": "חכה כאן עד שאני חוזר.",
       "wrong": "I until my breakfast at seven.",
+      "wrong_he": "אני עד את ארוחת הבוקר שלי בשבע.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1908,6 +1945,7 @@ const GAME_DATA = {
       "correct": "She is coming with us.",
       "correct_he": "היא באה איתנו.",
       "wrong": "I us to school every morning.",
+      "wrong_he": "אני אותנו לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1915,6 +1953,7 @@ const GAME_DATA = {
       "correct": "My dad goes to work early.",
       "correct_he": "אבא שלי הולך לעבודה מוקדם.",
       "wrong": "The work is very sunny today.",
+      "wrong_he": "העבודה מאוד שמשית היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1922,6 +1961,7 @@ const GAME_DATA = {
       "correct": "The world is a big place.",
       "correct_he": "העולם הוא מקום גדול.",
       "wrong": "I world my teeth every morning.",
+      "wrong_he": "אני עולם את השיניים שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1929,6 +1969,7 @@ const GAME_DATA = {
       "correct": "That answer is wrong.",
       "correct_he": "התשובה הזאת לא נכונה.",
       "wrong": "I wrong to school by bus.",
+      "wrong_he": "אני לא נכון לבית הספר באוטובוס.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1936,6 +1977,7 @@ const GAME_DATA = {
       "correct": "You're my best friend.",
       "correct_he": "אתה החבר הכי טוב שלי.",
       "wrong": "I you're to the park yesterday.",
+      "wrong_he": "אני אתה לפארק אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1943,6 +1985,7 @@ const GAME_DATA = {
       "correct": "You're welcome.",
       "correct_he": "בבקשה.",
       "wrong": "I welcome to school every day.",
+      "wrong_he": "אני ברוך הבא לבית הספר כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1950,6 +1993,7 @@ const GAME_DATA = {
       "correct": "We walked around the park.",
       "correct_he": "הלכנו מסביב לפארק.",
       "wrong": "I around my lunch at school.",
+      "wrong_he": "אני מסביב את ארוחת הצהריים שלי בבית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1957,6 +2001,7 @@ const GAME_DATA = {
       "correct": "The artist paints beautiful pictures.",
       "correct_he": "האמן מצייר תמונות יפות.",
       "wrong": "I artist to the store yesterday.",
+      "wrong_he": "אני אמן לחנות אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1964,6 +2009,7 @@ const GAME_DATA = {
       "correct": "We crossed the river on a bridge.",
       "correct_he": "עברנו את הנהר על גשר.",
       "wrong": "I bridge my homework every day.",
+      "wrong_he": "אני גשר את שיעורי הבית שלי כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1971,6 +2017,7 @@ const GAME_DATA = {
       "correct": "The princess lives in a castle.",
       "correct_he": "הנסיכה גרה בטירה.",
       "wrong": "I castle my teeth every morning.",
+      "wrong_he": "אני טירה את השיניים שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1978,6 +2025,7 @@ const GAME_DATA = {
       "correct": "We had a celebration for my birthday.",
       "correct_he": "עשינו חגיגה ליום ההולדת שלי.",
       "wrong": "I celebration to school every day.",
+      "wrong_he": "אני חגיגה לבית הספר כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1985,6 +2033,7 @@ const GAME_DATA = {
       "correct": "I put my clothes in the closet.",
       "correct_he": "שמתי את הבגדים שלי בארון.",
       "wrong": "Please clothes the window, it's hot.",
+      "wrong_he": "בבקשה בגדים את החלון, חם.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1992,6 +2041,7 @@ const GAME_DATA = {
       "correct": "My cousin lives in Haifa.",
       "correct_he": "בן הדוד שלי גר בחיפה.",
       "wrong": "I cousin my breakfast every morning.",
+      "wrong_he": "אני בן דוד את ארוחת הבוקר שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -1999,6 +2049,7 @@ const GAME_DATA = {
       "correct": "The plates are in the cupboard.",
       "correct_he": "הצלחות בארון המטבח.",
       "wrong": "I cupboard to school by bus.",
+      "wrong_he": "אני ארון מטבח לבית הספר באוטובוס.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2006,6 +2057,7 @@ const GAME_DATA = {
       "correct": "Camels live in the desert.",
       "correct_he": "גמלים חיים במדבר.",
       "wrong": "I desert my homework after school.",
+      "wrong_he": "אני מדבר את שיעורי הבית שלי אחרי בית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2013,6 +2065,7 @@ const GAME_DATA = {
       "correct": "The detective looks for clues.",
       "correct_he": "הבלש מחפש רמזים.",
       "wrong": "I detective my room every week.",
+      "wrong_he": "אני בלש את החדר שלי כל שבוע.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2020,6 +2073,7 @@ const GAME_DATA = {
       "correct": "We eat in the dining room.",
       "correct_he": "אנחנו אוכלים בחדר האוכל.",
       "wrong": "I dining room to the park yesterday.",
+      "wrong_he": "אני חדר אוכל לפארק אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2027,6 +2081,7 @@ const GAME_DATA = {
       "correct": "The fire kept us warm.",
       "correct_he": "האש חיממה אותנו.",
       "wrong": "I fire my lunch at school.",
+      "wrong_he": "אני אש את ארוחת הצהריים שלי בבית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2034,6 +2089,7 @@ const GAME_DATA = {
       "correct": "The flag is on the building.",
       "correct_he": "הדגל על הבניין.",
       "wrong": "I flag to school every morning.",
+      "wrong_he": "אני דגל לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2041,6 +2097,7 @@ const GAME_DATA = {
       "correct": "We saw tall trees in the forest.",
       "correct_he": "ראינו עצים גבוהים ביער.",
       "wrong": "I forest my breakfast at seven.",
+      "wrong_he": "אני יער את ארוחת הבוקר שלי בשבע.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2048,6 +2105,7 @@ const GAME_DATA = {
       "correct": "Wipe your feet on the mat.",
       "correct_he": "נגב את הרגליים על השטיחון.",
       "wrong": "I mat to the store yesterday.",
+      "wrong_he": "אני שטיחון לחנות אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2055,6 +2113,7 @@ const GAME_DATA = {
       "correct": "I look in the mirror in the morning.",
       "correct_he": "אני מסתכל במראה בבוקר.",
       "wrong": "Please mirror your homework now.",
+      "wrong_he": "בבקשה מראה את שיעורי הבית שלך עכשיו.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2062,6 +2121,7 @@ const GAME_DATA = {
       "correct": "Let's play outside.",
       "correct_he": "בואו נשחק בחוץ.",
       "wrong": "I outside my lunch at noon.",
+      "wrong_he": "אני בחוץ את ארוחת הצהריים שלי בצהריים.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2069,6 +2129,7 @@ const GAME_DATA = {
       "correct": "I want to paint a picture.",
       "correct_he": "אני רוצה לצייר תמונה.",
       "wrong": "The paint is very sunny today.",
+      "wrong_he": "הצבע מאוד שמשי היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2076,6 +2137,7 @@ const GAME_DATA = {
       "correct": "Pull the door to open it.",
       "correct_he": "משוך את הדלת כדי לפתוח אותה.",
       "wrong": "The pull is on the table.",
+      "wrong_he": "המשיכה על השולחן.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2083,6 +2145,7 @@ const GAME_DATA = {
       "correct": "Milk is in the refrigerator.",
       "correct_he": "החלב במקרר.",
       "wrong": "I refrigerator to school every day.",
+      "wrong_he": "אני מקרר לבית הספר כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2090,6 +2153,7 @@ const GAME_DATA = {
       "correct": "I like rice with chicken.",
       "correct_he": "אני אוהב אורז עם עוף.",
       "wrong": "Please rice the door behind you.",
+      "wrong_he": "בבקשה אורז את הדלת מאחוריך.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2097,6 +2161,7 @@ const GAME_DATA = {
       "correct": "The river is wide.",
       "correct_he": "הנהר רחב.",
       "wrong": "I river my teeth every morning.",
+      "wrong_he": "אני נהר את השיניים שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2104,6 +2169,7 @@ const GAME_DATA = {
       "correct": "The cat is on the roof.",
       "correct_he": "החתול על הגג.",
       "wrong": "I roof to school by car.",
+      "wrong_he": "אני גג לבית הספר במכונית.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2111,6 +2177,7 @@ const GAME_DATA = {
       "correct": "The servant helped the queen.",
       "correct_he": "המשרת עזר למלכה.",
       "wrong": "I servant my homework every day.",
+      "wrong_he": "אני משרת את שיעורי הבית שלי כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2118,6 +2185,7 @@ const GAME_DATA = {
       "correct": "The ship sailed across the sea.",
       "correct_he": "הספינה הפליגה מעבר לים.",
       "wrong": "I ship my breakfast at home.",
+      "wrong_he": "אני ספינה את ארוחת הבוקר שלי בבית.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2125,6 +2193,7 @@ const GAME_DATA = {
       "correct": "I take a shower every day.",
       "correct_he": "אני מתקלח כל יום.",
       "wrong": "Please shower your room now.",
+      "wrong_he": "בבקשה מקלחת את החדר שלך עכשיו.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2132,6 +2201,7 @@ const GAME_DATA = {
       "correct": "The cup is in the sink.",
       "correct_he": "הכוס בכיור.",
       "wrong": "I sink to the park yesterday.",
+      "wrong_he": "אני כיור לפארק אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2139,6 +2209,7 @@ const GAME_DATA = {
       "correct": "Use a spoon to eat soup.",
       "correct_he": "השתמש בכפית כדי לאכול מרק.",
       "wrong": "I spoon to school every morning.",
+      "wrong_he": "אני כפית לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2146,6 +2217,7 @@ const GAME_DATA = {
       "correct": "The pot is on the stove.",
       "correct_he": "הסיר על הכיריים.",
       "wrong": "I stove my homework after school.",
+      "wrong_he": "אני כיריים את שיעורי הבית שלי אחרי בית הספר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2153,6 +2225,7 @@ const GAME_DATA = {
       "correct": "I drink juice with a straw.",
       "correct_he": "אני שותה מיץ עם קש.",
       "wrong": "Please straw the window, it's cold.",
+      "wrong_he": "בבקשה קש את החלון, קר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2160,6 +2233,7 @@ const GAME_DATA = {
       "correct": "We sleep in a tent when we camp.",
       "correct_he": "אנחנו ישנים באוהל כשאנחנו מחנים.",
       "wrong": "I tent my breakfast every morning.",
+      "wrong_he": "אני אוהל את ארוחת הבוקר שלי כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2167,6 +2241,7 @@ const GAME_DATA = {
       "correct": "The thief ran away.",
       "correct_he": "הגנב ברח.",
       "wrong": "I thief to school every day.",
+      "wrong_he": "אני גנב לבית הספר כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2174,6 +2249,7 @@ const GAME_DATA = {
       "correct": "Throw the ball to me.",
       "correct_he": "זרוק לי את הכדור.",
       "wrong": "The throw is very beautiful today.",
+      "wrong_he": "הזריקה מאוד יפה היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2181,6 +2257,7 @@ const GAME_DATA = {
       "correct": "The toilet is in the bathroom.",
       "correct_he": "השירותים בחדר האמבטיה.",
       "wrong": "I toilet to the store yesterday.",
+      "wrong_he": "אני שירותים לחנות אתמול.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2188,6 +2265,7 @@ const GAME_DATA = {
       "correct": "We travel to Eilat in the summer.",
       "correct_he": "אנחנו נוסעים לאילת בקיץ.",
       "wrong": "The travel is on the table.",
+      "wrong_he": "הנסיעה על השולחן.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2195,6 +2273,7 @@ const GAME_DATA = {
       "correct": "We went on a school trip.",
       "correct_he": "יצאנו לטיול בית ספר.",
       "wrong": "I trip my teeth every night.",
+      "wrong_he": "אני טיול את השיניים שלי כל לילה.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2202,6 +2281,7 @@ const GAME_DATA = {
       "correct": "I want to visit my grandparents.",
       "correct_he": "אני רוצה לבקר את הסבא והסבתא שלי.",
       "wrong": "The visit is very sunny today.",
+      "wrong_he": "הביקור מאוד שמשי היום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2209,6 +2289,7 @@ const GAME_DATA = {
       "correct": "I play with my friends on the weekend.",
       "correct_he": "אני משחק עם החברים שלי בסוף השבוע.",
       "wrong": "I weekend my homework every day.",
+      "wrong_he": "אני סוף שבוע את שיעורי הבית שלי כל יום.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     },
     {
@@ -2216,6 +2297,7 @@ const GAME_DATA = {
       "correct": "This table is made of wood.",
       "correct_he": "השולחן הזה עשוי מעץ.",
       "wrong": "I wood to school every morning.",
+      "wrong_he": "אני עץ לבית הספר כל בוקר.",
       "explain_he": "בחר/י את המשפט שבו המילה מתאימה ומשתמשים בה נכון."
     }
   ],
