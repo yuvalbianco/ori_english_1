@@ -141,9 +141,14 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
   margin:16px 0 14px;
   font-size:22px;
   line-height:1.35;
+  direction:rtl;
+  text-align:right;
+  color:var(--text);
+}
+
+.prompt.ltr{
   direction:ltr;
   text-align:left;
-  color:var(--text);
 }
 
 .area{min-height:60px}
@@ -322,7 +327,7 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 
 .words-table th{
   padding:10px 8px;
-  text-align:right;
+  text-align:center;
   border-bottom:2px solid var(--card-border);
   color:var(--primary);
   font-weight:600;
@@ -348,7 +353,7 @@ main{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:16px}
 
 .word-cell{
   direction:ltr;
-  text-align:left;
+  text-align:center;
   font-weight:500;
 }
 

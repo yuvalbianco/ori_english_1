@@ -25,6 +25,8 @@
       </select>
       <label class="sr" for="surpriseSelect">הפתעה כל X תשובות</label>
       <select id="surpriseSelect" style="display:none"></select>
+      <label class="sr" for="learnedSelect">תשובות נכונות ללמידה</label>
+      <select id="learnedSelect" style="display:none"></select>
       <button id="resetBtn" class="ghost">איפוס התקדמות</button>
     </div>
   </header>
@@ -54,7 +56,7 @@
 
     <section class="card">
       <h2>רשימת מילים</h2>
-      <p class="note">3 תשובות נכונות = המילה נלמדה.</p>
+      <p class="note" id="learnedNote">3 תשובות נכונות = המילה נלמדה.</p>
       <div id="wordsTableContainer" class="words-table-container"></div>
     </section>
   </main>

@@ -1,6 +1,6 @@
 
 const STORE_KEY = "ori_all_games_progress_v2";
-const MASTERED_CORRECT = 3;
+let MASTERED_CORRECT = 1;
 const WRONG_PENALTY_THRESHOLD = 2;
 let CORRECT_FOR_THEME = 5;
 
@@ -325,7 +325,11 @@ function remainingToMaster(key){
 
 function setPill(t){ document.getElementById("pill").textContent = t; }
 function setFeedback(t){ document.getElementById("feedback").innerHTML = t || ""; }
-function setPrompt(t){ document.getElementById("prompt").textContent = t || ""; }
+function setPrompt(t, ltr = false){
+  const el = document.getElementById("prompt");
+  el.textContent = t || "";
+  el.classList.toggle('ltr', ltr);
+}
 function setAreaHTML(html){ document.getElementById("area").innerHTML = html || ""; }
 
 function showSentenceFeedback(wordHe, sentenceEn, sentenceHe){
@@ -493,11 +497,14 @@ function updateWordsTable(){
   const container = document.getElementById("wordsTableContainer");
   if (!container) return;
 
+  // Hide count column when MASTERED_CORRECT is 1
+  const showCountColumn = MASTERED_CORRECT > 1;
+
   let html = `<table class="words-table">
     <thead>
       <tr>
         <th>מילה</th>
-        <th>נכון</th>
+        ${showCountColumn ? '<th>נכון</th>' : ''}
         <th>נלמד</th>
       </tr>
     </thead>
@@ -509,7 +516,7 @@ function updateWordsTable(){
     const learned = p.c >= MASTERED_CORRECT;
     html += `<tr class="${learned ? 'learned' : ''}">
       <td class="word-cell">${d.word}</td>
-      <td class="count-cell">${Math.min(p.c, MASTERED_CORRECT)}/${MASTERED_CORRECT}</td>
+      ${showCountColumn ? `<td class="count-cell">${Math.min(p.c, MASTERED_CORRECT)}/${MASTERED_CORRECT}</td>` : ''}
       <td class="status-cell">${learned ? '✓' : '✗'}</td>
     </tr>`;
   });
@@ -558,11 +565,8 @@ function onCorrect(wordKey){
     surpriseTriggered = true;
   }
 
-  // Word learned - also trigger surprise
+  // Word learned - show feedback (no surprise gif here, only from combo counter)
   if(nowLearned && !wasLearned){
-    if(!surpriseTriggered){
-      triggerSurprise();
-    }
     setFeedback(`מצוין! המילה "${originalWord}" נלמדה! 🎉`);
     // Check if all words are learned
     checkGameCompletion();
@@ -650,7 +654,7 @@ function renderGap(){
   }
   current = { type:"gap", q };
   setPill("בחר תשובה");
-  setPrompt(q.question);
+  setPrompt(q.question, true);
   setFeedback("");
   setAreaHTML(`<div class="grid2" id="gapChoices"></div>`);
   const box = document.getElementById("gapChoices");
@@ -714,7 +718,7 @@ function renderTwo(){
   }
   current = { type:"two", item };
   setPill("בחר תשובה");
-  setPrompt("Word: " + item.word);
+  setPrompt("Word: " + item.word, true);
   setFeedback("");
   setAreaHTML(`
     <div class="grid2" id="twoChoices">
@@ -1312,6 +1316,7 @@ document.getElementById("adminTrigger").onclick = () => {
     adminControlsVisible = !adminControlsVisible;
     document.getElementById("gameSelect").style.display = adminControlsVisible ? "" : "none";
     document.getElementById("surpriseSelect").style.display = adminControlsVisible ? "" : "none";
+    document.getElementById("learnedSelect").style.display = adminControlsVisible ? "" : "none";
     adminClicks = []; // Reset
   }
 };
@@ -1346,7 +1351,38 @@ surpriseSelect.onchange = () => {
   updateThemeCounter();
 };
 
+// ========== LEARNED THRESHOLD SELECTOR (1-10) ==========
+function updateLearnedNote(){
+  const note = document.getElementById("learnedNote");
+  if(note){
+    // Hide the note when MASTERED_CORRECT is 1
+    if(MASTERED_CORRECT === 1){
+      note.textContent = '';
+      note.style.display = 'none';
+    } else {
+      note.textContent = `${MASTERED_CORRECT} תשובות נכונות = המילה נלמדה.`;
+      note.style.display = '';
+    }
+  }
+}
+
+const learnedSelect = document.getElementById("learnedSelect");
+for(let i = 1; i <= 10; i++){
+  const option = document.createElement("option");
+  option.value = i;
+  option.textContent = `${i} תשובות ללמידה`;
+  learnedSelect.appendChild(option);
+}
+learnedSelect.value = MASTERED_CORRECT;
+learnedSelect.onchange = () => {
+  MASTERED_CORRECT = parseInt(learnedSelect.value);
+  save(state);
+  updateLearnedNote();
+  updateWordsTable();
+};
+
 // Initialize
 document.getElementById("gameSelect").value = state.game || "gap";
 applyTheme(currentThemeIndex);
+updateLearnedNote();
 render();
